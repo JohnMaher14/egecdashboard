@@ -19,3 +19,13 @@
 <app-footer *ngIf="!isLogined"></app-footer>
 <div class="body-overlay" (click)="closeOverlay()"></div>
 <!-- END: Content -->
+    <!--Preloader area start here-->
+    <div id="loading" style="background-image: url('assets/images/Loader.jpg')" *ngIf="loading">
+      <div class="loader">
+          <div class="loader-container">
+              <div class='loader-icon'>
+                  <img src="assets/images/logos/pre-logo.png" alt="">
+              </div>
+          </div>
+      </div>
+  </div>

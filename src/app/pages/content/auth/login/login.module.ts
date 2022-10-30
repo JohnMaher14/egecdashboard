@@ -6,10 +6,11 @@ import { LoginComponent } from './login.component';
 import { ToastrModule } from 'ngx-toastr';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PopoverModule } from "ngx-bootstrap/popover";
+import { FooterComponent } from 'src/app/pages/shared/footer/footer.component';
 
 @NgModule({
   declarations: [
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     CommonModule,

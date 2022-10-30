@@ -8,6 +8,7 @@ import { AuthenticationService } from './services/authentication.service';
 })
 export class AppComponent {
   isLogined!:boolean;
+  loading!:boolean;
   userArray: any;
   title = 'EgecDashboard';
   constructor(
@@ -29,6 +30,10 @@ export class AppComponent {
     notes: new FormControl(null, Validators.required),
   });
   ngOnInit() {
+    this.loading = true;
+    setTimeout(() => {
+      this.loading = false;
+    }, 1500);
     this.authenticationFunction();
   }
   onSubmit(heroForm:FormGroup){

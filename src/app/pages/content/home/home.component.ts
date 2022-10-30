@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   empolyees: any[] = [];
   bsInlineValue = new Date();
   loading!:boolean;
-
+  employeesLoading!:boolean;
   // Doughnut
     public doughnutChartDatasets: ChartConfiguration<'doughnut'>['data']['datasets'] = [
         {
@@ -61,9 +61,14 @@ export class HomeComponent implements OnInit {
       datasets: [
         {
           data: [30, 10, 15 , 2 , 3],
-
-          backgroundColor: ["#202556"],
-          hoverBackgroundColor: ["#202556"]
+          fill: true,
+          tension: 0.5,
+          borderColor: '#fff',
+          borderWidth: 1,
+          pointBackgroundColor: '#202556',
+          backgroundColor: 'rgba(225,225,225,0.3)',
+          pointHoverBorderColor: '#202556',
+          pointHoverBackgroundColor : '#fff',
         }
       ]
     };
@@ -76,7 +81,7 @@ export class HomeComponent implements OnInit {
 
         maintainAspectRatio: false,
     };
-    public lineChartLegend = true; 
+    public lineChartLegend = true;
   constructor(
     private _Renderer2:Renderer2,
     private _GeneralService:GeneralService,
@@ -87,10 +92,11 @@ export class HomeComponent implements OnInit {
     console.log(event.target.value);
     this._GeneralService.notepad(event.target.value ,this.userArray.id ,  event.target.value).subscribe(
       (response) => {
-        this._ToastrService.success('حفظ' , 'جاري الحفظ...' , {
-          timeOut: 6000 , positionClass: 'toast-bottom-center'
 
-        })
+        // this._ToastrService.success('حفظ' , 'جاري الحفظ...' , {
+        //   timeOut: 6000 , positionClass: 'toast-bottom-center'
+
+        // })
         localStorage.setItem('notepad', response.AdminNote);
       }
     )
@@ -194,7 +200,7 @@ export class HomeComponent implements OnInit {
 
   }
   showBackground(){
-    
+
     let widget = document.querySelector('.widget')
     let bodyOverlay = document.querySelector('.body-overlay')
 
@@ -202,7 +208,7 @@ export class HomeComponent implements OnInit {
     this._Renderer2.addClass(bodyOverlay, 'opened')
   }
   hideBackground(){
-    
+
     let widget = document.querySelector('.widget')
     let bodyOverlay = document.querySelector('.body-overlay')
 
@@ -249,13 +255,346 @@ export class HomeComponent implements OnInit {
                 let fullName = firstName.split('')[0].toUpperCase()
                 return response.abbrevationName = fullName
               }
-              
-            }
-            )
-            this.loading = false;
 
+            }
+        )
+        this.loading = false;
       }
     )
+  }
+  showAllRoles(){
+    this.employeesLoading = true;
+    this._GeneralService.statistics().subscribe(
+      (response) => {
+        this.empolyees = response.AdminsData.concat(
+
+          response.SuperAcademicGuideData,
+          response.AcademicGuideData,
+          response.AssistantData,
+          response.DataEntryData,
+          response.RegisteredAdminData,
+          response.FilesAdminData,
+          response.AccountAdminData,
+
+        );
+
+        this.empolyees.forEach(
+          (response:any) => {
+            const splitRole = response.role;
+            const splitedRole = splitRole.split('-');
+            const role = splitedRole.join(' ');
+            return response.reRole = role;
+          }
+        )
+        this.empolyees.forEach(
+          (response:any) => {
+              let splitName = response.en_name == null ? response.name : response.en_name;
+              let splitedName = splitName.split(' ');
+              let firstName = splitedName[0];
+              if(splitedName[1] != undefined){
+                let lastName = splitedName[1]
+                let fullName = firstName.split('')[0].toUpperCase() + lastName.split('')[0].toUpperCase();
+                return response.abbrevationName = fullName
+
+              }else{
+                let fullName = firstName.split('')[0].toUpperCase()
+                return response.abbrevationName = fullName
+              }
+
+            }
+        )
+        this.employeesLoading = false;
+      }
+    )
+  }
+  admins(){
+    this.employeesLoading = true;
+    this._GeneralService.statistics().subscribe(
+      (response) => {
+        // console.log(response.AdminsData);
+        this.empolyees = response.AdminsData
+
+        this.empolyees.forEach(
+          (response:any) => {
+            const splitRole = response.role;
+            const splitedRole = splitRole.split('-');
+            const role = splitedRole.join(' ');
+            return response.reRole = role;
+          }
+        )
+        this.empolyees.forEach(
+          (response:any) => {
+              let splitName = response.en_name == null ? response.name : response.en_name;
+              let splitedName = splitName.split(' ');
+              let firstName = splitedName[0];
+              if(splitedName[1] != undefined){
+                let lastName = splitedName[1]
+                let fullName = firstName.split('')[0].toUpperCase() + lastName.split('')[0].toUpperCase();
+                return response.abbrevationName = fullName
+
+              }else{
+                let fullName = firstName.split('')[0].toUpperCase()
+                return response.abbrevationName = fullName
+              }
+
+            }
+        )
+        this.employeesLoading = false;
+      }
+    )
+
+  }
+  superAcademicGuide(){
+    this.employeesLoading = true;
+    this._GeneralService.statistics().subscribe(
+      (response) => {
+        this.empolyees = response.SuperAcademicGuideData
+
+        this.empolyees.forEach(
+          (response:any) => {
+            const splitRole = response.role;
+            const splitedRole = splitRole.split('-');
+            const role = splitedRole.join(' ');
+            return response.reRole = role;
+          }
+        )
+        this.empolyees.forEach(
+          (response:any) => {
+              let splitName = response.en_name == null ? response.name : response.en_name;
+              let splitedName = splitName.split(' ');
+              let firstName = splitedName[0];
+              if(splitedName[1] != undefined){
+                let lastName = splitedName[1]
+                let fullName = firstName.split('')[0].toUpperCase() + lastName.split('')[0].toUpperCase();
+                return response.abbrevationName = fullName
+
+              }else{
+                let fullName = firstName.split('')[0].toUpperCase()
+                return response.abbrevationName = fullName
+              }
+
+            }
+        )
+        this.employeesLoading = false;
+      }
+    )
+
+  }
+  academicGuide(){
+    this.employeesLoading = true;
+    this._GeneralService.statistics().subscribe(
+      (response) => {
+        this.empolyees = response.AcademicGuideData
+
+        this.empolyees.forEach(
+          (response:any) => {
+            const splitRole = response.role;
+            const splitedRole = splitRole.split('-');
+            const role = splitedRole.join(' ');
+            return response.reRole = role;
+          }
+        )
+        this.empolyees.forEach(
+          (response:any) => {
+              let splitName = response.en_name == null ? response.name : response.en_name;
+              let splitedName = splitName.split(' ');
+              let firstName = splitedName[0];
+              if(splitedName[1] != undefined){
+                let lastName = splitedName[1]
+                let fullName = firstName.split('')[0].toUpperCase() + lastName.split('')[0].toUpperCase();
+                return response.abbrevationName = fullName
+
+              }else{
+                let fullName = firstName.split('')[0].toUpperCase()
+                return response.abbrevationName = fullName
+              }
+
+            }
+        )
+        this.employeesLoading = false;
+      }
+    )
+
+  }
+  assitants(){
+    this.employeesLoading = true;
+    this._GeneralService.statistics().subscribe(
+      (response) => {
+        this.empolyees = response.AssistantData
+
+        this.empolyees.forEach(
+          (response:any) => {
+            const splitRole = response.role;
+            const splitedRole = splitRole.split('-');
+            const role = splitedRole.join(' ');
+            return response.reRole = role;
+          }
+        )
+        this.empolyees.forEach(
+          (response:any) => {
+              let splitName = response.en_name == null ? response.name : response.en_name;
+              let splitedName = splitName.split(' ');
+              let firstName = splitedName[0];
+              if(splitedName[1] != undefined){
+                let lastName = splitedName[1]
+                let fullName = firstName.split('')[0].toUpperCase() + lastName.split('')[0].toUpperCase();
+                return response.abbrevationName = fullName
+
+              }else{
+                let fullName = firstName.split('')[0].toUpperCase()
+                return response.abbrevationName = fullName
+              }
+
+            }
+        )
+        this.employeesLoading = false;
+      }
+    )
+
+  }
+  dataEntry(){
+    this.employeesLoading = true;
+    this._GeneralService.statistics().subscribe(
+      (response) => {
+        this.empolyees = response.DataEntryData
+
+        this.empolyees.forEach(
+          (response:any) => {
+            const splitRole = response.role;
+            const splitedRole = splitRole.split('-');
+            const role = splitedRole.join(' ');
+            return response.reRole = role;
+          }
+        )
+        this.empolyees.forEach(
+          (response:any) => {
+              let splitName = response.en_name == null ? response.name : response.en_name;
+              let splitedName = splitName.split(' ');
+              let firstName = splitedName[0];
+              if(splitedName[1] != undefined){
+                let lastName = splitedName[1]
+                let fullName = firstName.split('')[0].toUpperCase() + lastName.split('')[0].toUpperCase();
+                return response.abbrevationName = fullName
+
+              }else{
+                let fullName = firstName.split('')[0].toUpperCase()
+                return response.abbrevationName = fullName
+              }
+
+            }
+        )
+        this.employeesLoading = false;
+      }
+    )
+
+  }
+  registeredAdminData(){
+    this.employeesLoading = true;
+    this._GeneralService.statistics().subscribe(
+      (response) => {
+        this.empolyees = response.RegisteredAdminData
+
+        this.empolyees.forEach(
+          (response:any) => {
+            const splitRole = response.role;
+            const splitedRole = splitRole.split('-');
+            const role = splitedRole.join(' ');
+            return response.reRole = role;
+          }
+        )
+        this.empolyees.forEach(
+          (response:any) => {
+              let splitName = response.en_name == null ? response.name : response.en_name;
+              let splitedName = splitName.split(' ');
+              let firstName = splitedName[0];
+              if(splitedName[1] != undefined){
+                let lastName = splitedName[1]
+                let fullName = firstName.split('')[0].toUpperCase() + lastName.split('')[0].toUpperCase();
+                return response.abbrevationName = fullName
+
+              }else{
+                let fullName = firstName.split('')[0].toUpperCase()
+                return response.abbrevationName = fullName
+              }
+
+            }
+        )
+        this.employeesLoading = false;
+      }
+    )
+
+  }
+  filesAdminData(){
+    this.employeesLoading = true;
+    this._GeneralService.statistics().subscribe(
+      (response) => {
+        this.empolyees = response.FilesAdminData
+
+        this.empolyees.forEach(
+          (response:any) => {
+            const splitRole = response.role;
+            const splitedRole = splitRole.split('-');
+            const role = splitedRole.join(' ');
+            return response.reRole = role;
+          }
+        )
+        this.empolyees.forEach(
+          (response:any) => {
+              let splitName = response.en_name == null ? response.name : response.en_name;
+              let splitedName = splitName.split(' ');
+              let firstName = splitedName[0];
+              if(splitedName[1] != undefined){
+                let lastName = splitedName[1]
+                let fullName = firstName.split('')[0].toUpperCase() + lastName.split('')[0].toUpperCase();
+                return response.abbrevationName = fullName
+
+              }else{
+                let fullName = firstName.split('')[0].toUpperCase()
+                return response.abbrevationName = fullName
+              }
+
+            }
+        )
+        this.employeesLoading = false;
+      }
+    )
+
+  }
+  accountAdminData(){
+    this.employeesLoading = true;
+    this._GeneralService.statistics().subscribe(
+      (response) => {
+        this.empolyees = response.AccountAdminData
+
+        this.empolyees.forEach(
+          (response:any) => {
+            const splitRole = response.role;
+            const splitedRole = splitRole.split('-');
+            const role = splitedRole.join(' ');
+            return response.reRole = role;
+          }
+        )
+        this.empolyees.forEach(
+          (response:any) => {
+              let splitName = response.en_name == null ? response.name : response.en_name;
+              let splitedName = splitName.split(' ');
+              let firstName = splitedName[0];
+              if(splitedName[1] != undefined){
+                let lastName = splitedName[1]
+                let fullName = firstName.split('')[0].toUpperCase() + lastName.split('')[0].toUpperCase();
+                return response.abbrevationName = fullName
+
+              }else{
+                let fullName = firstName.split('')[0].toUpperCase()
+                return response.abbrevationName = fullName
+              }
+
+            }
+        )
+        this.employeesLoading = false;
+      }
+    )
+
   }
   authenticationFunction(){
 
@@ -286,7 +625,7 @@ export class HomeComponent implements OnInit {
     this.showStatistics();
     this.authenticationFunction();
     this.getNotepad();
-
+    // this.superAdmins();
     let main_content = document.querySelector('.content');
 
     this._Renderer2.removeClass(document.body , 'login')

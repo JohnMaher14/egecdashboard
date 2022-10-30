@@ -1,12 +1,12 @@
 <div class="container px-sm-10">
-  <div class="grid columns-2 gap-4">
+  <div class="row">
       <!-- BEGIN: Login Info -->
-      <div class="g-col-2 g-col-xl-1 d-none d-xl-flex flex-column min-vh-screen">
+      <div class="col-lg-6 d-none d-xl-flex flex-column min-vh-screen">
           <a  class="-intro-x d-flex align-items-center pt-5">
               <img alt="Rubick Bootstrap HTML Admin Template" class="w-250" src="assets/images/logos/logo.png">
           </a>
           <div class="my-auto">
-              <img alt="Rubick Bootstrap HTML Admin Template" class="-intro-x w-75 mt-n16" src="assets/images/Login_vector.png">
+              <img alt="Rubick Bootstrap HTML Admin Template" class="-intro-x w-65 mt-n16" src="assets/images/Login_vector.png">
               <h1 class="-intro-x login-h1 text-white fw-medium fs-4xl lh-base mt-10 fw500">
                 مرحبًا بك!
               </h1>
@@ -18,7 +18,7 @@
       </div>
       <!-- END: Login Info -->
       <!-- BEGIN: Login Form -->
-      <div class="g-col-2 g-col-xl-1 h-screen h-xl-auto d-flex py-5 py-xl-0 my-10 my-xl-0">
+      <div class="col-lg-6  d-flex py-5 py-xl-0 my-5 my-xl-0">
           <div class="my-auto mx-auto w-75  bg-white dark-bg-dark-1 bg-xl-transparent px-5 px-sm-8 py-8 p-xl-0 rounded-2 shadow-md shadow-xl-none w-full w-sm-3/4 w-lg-2/4 w-xl-auto">
             <img alt="Rubick Bootstrap HTML Admin Template" class="d-xl-none w-100" src="assets/images/logos/logo2.png">
             <h1 class="-intro-x login-h1 fw-medium fs-4xl lh-base mt-10 fw500 d-xl-none">
@@ -85,3 +85,20 @@
       <!-- END: Login Form -->
   </div>
 </div>
+<footer class="footer py-4 fixed-bottom" >
+  <p class="d-flex p-0 align-items-center justify-content-center text-white">جميع الحقوق محفوظة مدعوم من ديجيتال بوند<a class="mx-2" target="_blank" href="https://digitalbondmena.com/">
+          <img height="30px" class="mx-2" src="assets/images/db.png" alt="">
+      </a>© 2022
+
+  </p>
+</footer>
+    <!--Preloader area start here-->
+    <div id="loading" style="background-image: url('assets/images/Loader.jpg')" *ngIf="loading">
+      <div class="loader">
+          <div class="loader-container">
+              <div class='loader-icon'>
+                  <img src="assets/images/logos/pre-logo.png" alt="">
+              </div>
+          </div>
+      </div>
+  </div>

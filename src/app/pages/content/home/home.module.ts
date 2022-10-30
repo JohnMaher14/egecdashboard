@@ -5,6 +5,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { NgChartsModule } from "ng2-charts";
 import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
+import { BsDropdownModule  } from "ngx-bootstrap/dropdown";
 @NgModule({
   declarations: [
     HomeComponent,
@@ -14,8 +15,8 @@ import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
     CommonModule,
     HomeRoutingModule,
     NgChartsModule,
-    BsDatepickerModule.forRoot()
-
+    BsDatepickerModule.forRoot(),
+    BsDropdownModule.forRoot()
   ]
 })
 export class HomeModule { }

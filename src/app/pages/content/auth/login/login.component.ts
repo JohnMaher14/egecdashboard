@@ -12,6 +12,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginComponent implements OnInit {
   actionLoading!:boolean;
+  loading!:boolean;
   constructor(
     private _Renderer2:Renderer2,
     private _UserService:UserService,
@@ -61,7 +62,10 @@ export class LoginComponent implements OnInit {
     )
   }
   ngOnInit(): void {
-
+    this.loading = true;
+    setTimeout(() => {
+      this.loading = false;
+    }, 1500);
     if (localStorage.getItem('currentUserToken') !== null) {
       this._Router.navigate(['/admin/home'])
     }else{

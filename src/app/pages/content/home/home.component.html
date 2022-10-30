@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="card notepad__card">
 
-      <textarea name="" id="notepad" (change)="typingInNotepad($event)" class="notepad form-control"
+      <textarea name="" id="notepad" (keyup)="typingInNotepad($event)" class="notepad form-control"
         placeholder="بماذا تفكر؟">{{notepad}}</textarea>
       <!-- <ckeditor
           [(ngModel)]="ckeditorContent"
@@ -21,9 +21,9 @@
       </button>
     </div>
   </div>
-</div>
+</div> 
 <div class="row mb-5">
-  <div class="col-lg-5 mb-4">
+  <div class="col-xl-5 mb-4">
     <div class="card card-shadow main__card overflow-hidden mb-4 h-100">
       <div class="bg-primary bg-soft">
         <div class="row align-items-center justify-content-between align-items-center">
@@ -83,7 +83,7 @@
 
 
   </div>
-  <div class="col-lg-7">
+  <div class="col-xl-7">
     <div class="grid columns-12 gap-6 statitics">
       <div class="g-col-12  g-col-lg-4 intro-y">
         <div class="flip-card report-box zoom-in">
@@ -198,7 +198,7 @@
 </div>
 <div class="row">
   <div class="col-lg-5">
-    <div class="card card-shadow mb-4">
+    <div class="card card-shadow h-100">
       <div class="card-header">
         <h5 class="card-title mb-0">اخر الأشعارات التي لم يتم فتحها</h5>
       </div>
@@ -213,7 +213,7 @@
               </div>
               <div class="media-body">
                 <p class="media-heading"><a role="button" tabindex="0" class="name">John Maher
-                  </a><span class="datetime">at 12.10.2014</span></p>
+                  </a><span class="datetime">{{'2022-10-20 10:48:23' | date:'EEEE  d MMMM  y, h:mm a':undefined:'ar'}}</span></p>
                 <span class="body">
                   لقد قام John Maher بتخصيص طالب جديد لك
                 </span>
@@ -229,7 +229,7 @@
               </div>
               <div class="media-body">
                 <p class="media-heading"><a role="button" tabindex="0" class="name">Khalifa
-                  </a><span class="datetime">2 hours ago</span></p>
+                  </a><span class="datetime">{{'2022-10-20 10:48:23' | date:'EEEE  d MMMM  y, h:mm a':undefined:'ar'}}</span></p>
                 <span class="body">قام بكتابة تعليق على أحد الأرقام الخاصة بك
                 </span>
               </div>
@@ -244,7 +244,7 @@
               </div>
               <div class="media-body">
                 <p class="media-heading"><a role="button" tabindex="0" class="name">Maha
-                  </a><span class="datetime">2 hours ago</span></p>
+                  </a><span class="datetime">{{'2022-10-20 10:48:23' | date:'EEEE  d MMMM  y, h:mm a':undefined:'ar'}}</span></p>
                 <span class="body">تطلب Maha الإذن بقبول فواتير طالب جديد
                 </span>
               </div>
@@ -259,8 +259,8 @@
                 </div>
               </div>
               <div class="media-body">
-                <p class="media-heading"><a role="button" tabindex="0" class="name">You
-                  </a><span class="datetime">1 hours ago</span></p>
+                <p class="media-heading"><a role="button" tabindex="0" class="name">أنت
+                  </a><span class="datetime">{{'2022-10-20 10:48:23' | date:'EEEE  d MMMM  y, h:mm a':undefined:'ar'}}</span></p>
                 <span class="body">قمت بتعديل الملف الشخصي لطالب جديد
                 </span>
               </div>
@@ -273,11 +273,33 @@
   </div>
   <div class="col-lg-7">
     <div class="card user__card card-shadow">
-      <div class="card-header">
+      <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">الموظفين</h5>
-      </div>
-      <div class="card-body">
+        <div class="btn-group" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
+                  aria-controls="dropdown-basic">
+                  <i class="fas fa-ellipsis-v"></i>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="button-basic">
+            <li role="menuitem"><a class="dropdown-item" (click)="showAllRoles()">الكل</a></li>
+            <li role="menuitem"><a class="dropdown-item" (click)="admins()">أدمن</a></li>
+            <li role="menuitem"><a class="dropdown-item" (click)="superAcademicGuide()" > كبير مرشد أكاديمي</a></li>
+            <li role="menuitem"><a class="dropdown-item" (click)="academicGuide()" >مرشد أكاديمي</a></li>
+            <li role="menuitem"><a class="dropdown-item" (click)="assitants()" >مساعد</a></li>
+            <li role="menuitem"><a class="dropdown-item" (click)="dataEntry()" >مدخل بيانات</a></li>
+            <li role="menuitem"><a class="dropdown-item" (click)="registeredAdminData()" >ادمن تسجيل بيانات</a></li>
+            <li role="menuitem"><a class="dropdown-item" (click)="filesAdminData()" >ادمن الملفات</a></li>
+            <li role="menuitem"><a class="dropdown-item" (click)="accountAdminData()" >ادمن الحسابات</a></li>
 
+          </ul>
+        </div>
+      </div>
+      <div class="card-body position-relative">
+        <div class="loading_data" *ngIf="employeesLoading">
+
+          <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        </div>
         <div class="d-flex">
           <div class="col-lg-4 userCard" *ngFor="let empolyee of empolyees">
             <div class="intro-y col-span-12 md:col-span-6 lg:col-span-4 h-100">
@@ -286,14 +308,12 @@
                 <div class="flex items-start p-3">
                   <div class="w-full">
                     <div class="w-16 h-16 mx-auto image-fit ml-2">
-                      <!-- <img alt="Midone - HTML Admin Template" class="rounded-full"
-                                              src="assets/images/profile-10.jpg"> -->
                       <div class="card_img">
                         <p class="mb-0 fs16">{{ empolyee.abbrevationName }}</p>
                       </div>
                     </div>
                     <div class="lg:ml-4 text-center lg:text-left mt-3 lg:mt-0">
-                      <h4 href="" class="font-large username">{{
+                      <h4  class="font-large username">{{
                                             empolyee.en_name != null ? empolyee.en_name : empolyee.name
                                           }}</h4>
                       <p class="text-slate-500 text-xs mt-0.5 username_role">{{empolyee.reRole}}</p>
@@ -326,7 +346,7 @@
       <li class="col-6" (click)="onClickBackground(3)">
         <img src="assets/images/background/Cacao.jpg" alt="">
       </li >
-      
+
       <li class="col-6" (click)="onClickBackground(4)">
         <img src="assets/images/background/Light.jpg" alt="">
       </li>
