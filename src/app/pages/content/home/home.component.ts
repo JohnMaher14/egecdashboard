@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { ChartConfiguration, ChartOptions } from 'chart.js';
-import { OwlOptions } from 'ngx-owl-carousel-o';
+import { Chart } from 'chart.js';
+import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { GeneralService } from 'src/app/services/general.service';
@@ -22,72 +22,28 @@ export class HomeComponent implements OnInit {
   ckeditorContent: any;
   ckeConfig:any;
   notepad:any;
-  day!:number;
+  notepadNull : string = 'بماذا تفكر؟';
+  day!:string;
   month!:string;
+  chart:any;
   hideNotePad:boolean = false;
   empolyees: any[] = [];
+  empolyeesCard: any[] = [];
   bsInlineValue = new Date();
   loading!:boolean;
   employeesLoading!:boolean;
-  // Doughnut
-    public doughnutChartDatasets: ChartConfiguration<'doughnut'>['data']['datasets'] = [
-        {
-          data: [30, 10, 15 , 2 , 3],
-          // label:"" ,
-          // label: ["اجمالي عدد الطلاب", "الغير معينين",  "المعنين" ] ,
-          backgroundColor: ["#FF8B26", "#FFC533", "#285FD3" , "#777", "#09c"],
-          hoverBackgroundColor: ["#FF8B26", "#FFC533", "#285FD3" , "#777", "#09c"],
-          borderWidth: 0,
-        }
-      ];
-    public doughnutChartLabels: string[] = ["اجمالي", "المرشد الاكاديمي",  "كبير مرشد اكاديمين" ,  "مساعد" , "محسابين"];
-    public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'] = {
-
-      // cutoutPercentage: 80,
-      // cutout: ,
-      cutout: "80%",
-
-      // Boolean - whether or not the chart should be responsive and resize when the browser does.
-      responsive: true,
-
-
-      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-
-      maintainAspectRatio: false,
-    };
-
-    public lineChartData: ChartConfiguration<'line'>['data'] = {
-      labels: ["اجمالي", "المرشد الاكاديمي",  "كبير مرشد اكاديمين" ,  "مساعد" , "محسابين"],
-      datasets: [
-        {
-          data: [30, 10, 15 , 2 , 3],
-          fill: true,
-          tension: 0.5,
-          borderColor: '#fff',
-          borderWidth: 1,
-          pointBackgroundColor: '#202556',
-          backgroundColor: 'rgba(225,225,225,0.3)',
-          pointHoverBorderColor: '#202556',
-          pointHoverBackgroundColor : '#fff',
-        }
-      ]
-    };
-    public lineChartOptions: ChartOptions<'line'> = {
-       // Boolean - whether or not the chart should be responsive and resize when the browser does.
-        responsive: true,
-
-
-       // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-
-        maintainAspectRatio: false,
-    };
-    public lineChartLegend = true;
+  dataChart!: number;
+  showNotedpad!:boolean;
+  date = new Date();
   constructor(
     private _Renderer2:Renderer2,
     private _GeneralService:GeneralService,
     private _AuthenticationService:AuthenticationService,
-    private _ToastrService:ToastrService
-  ) { }
+    private _ToastrService:ToastrService,
+    private _BsLocaleService:BsLocaleService
+    ) { 
+      console.log(this.date);
+    }
   typingInNotepad(event:any){
     console.log(event.target.value);
     this._GeneralService.notepad(event.target.value ,this.userArray.id ,  event.target.value).subscribe(
@@ -164,12 +120,10 @@ export class HomeComponent implements OnInit {
     const hr = document.querySelector("#hr")
     const mn = document.querySelector("#mn")
     const sc = document.querySelector("#sc")
-    const monthNames = ["يناير", "فبراير", "مارس	", "إبريل", "مايو", "يونيو ",
-      "يوليو ", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر	", "ديسمبر"
-    ];
-      const date = new Date();
-      this.day = date.getUTCDate();
-      this.month = monthNames[date.getMonth()];
+
+    this.day = new Date().toLocaleString('ar-EG', {day: 'numeric'});
+    this.month = new Date().toLocaleString('ar-EG', {month: 'long'});
+
     setInterval( () =>  {
         let day = new Date();
         let hh = day.getHours() * 30;
@@ -190,12 +144,18 @@ export class HomeComponent implements OnInit {
   }
   showNotePad(){
     let notePad =  document.querySelector('.notepad__card');
+    let mainCard =  document.querySelector('.main__card');
     this._Renderer2.addClass(notePad, 'show')
+    this._Renderer2.removeClass(mainCard, 'show')
     this.hideNotePad = true;
   }
   hideNotepad(){
     let notePad =  document.querySelector('.notepad__card');
+    let mainCard =  document.querySelector('.main__card');
+
     this._Renderer2.removeClass(notePad, 'show')
+    this._Renderer2.addClass(mainCard, 'show')
+
     this.hideNotePad = false;
 
   }
@@ -220,7 +180,6 @@ export class HomeComponent implements OnInit {
     this.loading = true;
     this._GeneralService.statistics().subscribe(
       (response) => {
-        this.statistics = response;
         this.empolyees = response.AdminsData.concat(
 
           response.SuperAcademicGuideData,
@@ -235,10 +194,26 @@ export class HomeComponent implements OnInit {
 
         this.empolyees.forEach(
           (response:any) => {
-            const splitRole = response.role;
-            const splitedRole = splitRole.split('-');
-            const role = splitedRole.join(' ');
-            return response.reRole = role;
+            if(response.role == 'super-admin'){
+              return response.reRole = 'سوبر أدمن';
+            }else if(response.role == 'admin'){
+              return response.reRole = 'أدمن';
+            }else if(response.role == 'super-academic-guide'){
+              return response.reRole = 'كبير مرشدين أكاديمي';
+            }else if(response.role == 'academic-guide'){
+              return response.reRole = ' مرشد أكاديمي';
+            }else if(response.role == 'assistant'){
+              return response.reRole = 'مساعد';
+            }else if(response.role == 'date-entry'){
+              return response.reRole = 'مدخل بيانات';
+            }else if(response.role == 'registered-admin'){
+              return response.reRole = 'أدمن التسجيل';
+            }else if(response.role == 'files-admin'){
+              return response.reRole = 'أدمن  الملفات';
+            }else if(response.role == 'account-admin'){
+              return response.reRole = 'أدمن  الحسابات';
+            }
+            return response;
           }
         )
         this.empolyees.forEach(
@@ -258,6 +233,52 @@ export class HomeComponent implements OnInit {
 
             }
         )
+        const chartss =  [response.totalAdmin ,  response.totalSuperAcademicGuide, response.totalAcademicGuide , response.totalAssistant , response.totalAccountAdmin , response.totalDataEntry , response.totalRegisteredAdmin,  response.totalFilesAdmin ]
+        // this.dataChart = Math.max(null , chartss)
+        this.dataChart = Math.max.apply(null , chartss)
+        console.log(Math.max.apply(null , chartss));
+        this.chart = new Chart("emplyeesChart", {
+          type: 'line', //this denotes tha type of chart
+
+          data: {// values on X-Axis
+            labels: [ "أدمن" , "كبير مرشد اكاديمين", "المرشد الاكاديمي",   "مساعد" , "محسابين" ,  "مدخل البيانات"  ,  "أدمن التسجيل"  ,  "أدمن الملفات"],
+             datasets: [
+              {
+                data: [response.totalAdmin ,  response.totalSuperAcademicGuide, response.totalAcademicGuide , response.totalAssistant , response.totalAccountAdmin , response.totalDataEntry , response.totalRegisteredAdmin,  response.totalFilesAdmin ],
+                fill: true,
+                tension: 0.5,
+                borderColor: '#fff',
+                borderWidth: 1,
+                pointBackgroundColor:[ '#202556' , '#09c' , '#FF5733' , '#581845' , '#777' , 'red' , '#6F9897' , '#CAB69E'],
+                backgroundColor: 'rgba(255,255,255,0.5)',
+                pointHoverBorderColor: ['#202556' , '#09c' , '#FF5733' , '#581845' , '#777' , 'red' , '#6F9897' , '#CAB69E'],
+                pointHoverBackgroundColor : ['#202556' , '#09c' , '#FF5733' , '#581845' , '#777' , 'red' , '#6F9897' , '#CAB69E'],
+              }
+            ]
+          },
+
+
+          options: {
+
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins:{
+              legend: {
+                display: false
+              },
+            },
+            scales:{
+              x:{
+                display: false
+              },
+              y:{
+                max: this.dataChart
+              }
+            },
+          },
+
+
+        });
         this.loading = false;
       }
     )
@@ -266,7 +287,7 @@ export class HomeComponent implements OnInit {
     this.employeesLoading = true;
     this._GeneralService.statistics().subscribe(
       (response) => {
-        this.empolyees = response.AdminsData.concat(
+        this.empolyeesCard = response.AdminsData.concat(
 
           response.SuperAcademicGuideData,
           response.AcademicGuideData,
@@ -278,15 +299,31 @@ export class HomeComponent implements OnInit {
 
         );
 
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
-            const splitRole = response.role;
-            const splitedRole = splitRole.split('-');
-            const role = splitedRole.join(' ');
-            return response.reRole = role;
+            if(response.role == 'super-admin'){
+              return response.reRole = 'سوبر أدمن';
+            }else if(response.role == 'admin'){
+              return response.reRole = 'أدمن';
+            }else if(response.role == 'super-academic-guide'){
+              return response.reRole = 'كبير مرشدين أكاديمي';
+            }else if(response.role == 'academic-guide'){
+              return response.reRole = ' مرشد أكاديمي';
+            }else if(response.role == 'assistant'){
+              return response.reRole = 'مساعد';
+            }else if(response.role == 'date-entry'){
+              return response.reRole = 'مدخل بيانات';
+            }else if(response.role == 'registered-admin'){
+              return response.reRole = 'أدمن التسجيل';
+            }else if(response.role == 'files-admin'){
+              return response.reRole = 'أدمن  الملفات';
+            }else if(response.role == 'account-admin'){
+              return response.reRole = 'أدمن  الحسابات';
+            }
+            return response;
           }
         )
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
               let splitName = response.en_name == null ? response.name : response.en_name;
               let splitedName = splitName.split(' ');
@@ -312,17 +349,33 @@ export class HomeComponent implements OnInit {
     this._GeneralService.statistics().subscribe(
       (response) => {
         // console.log(response.AdminsData);
-        this.empolyees = response.AdminsData
+        this.empolyeesCard = response.AdminsData
 
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
-            const splitRole = response.role;
-            const splitedRole = splitRole.split('-');
-            const role = splitedRole.join(' ');
-            return response.reRole = role;
+            if(response.role == 'super-admin'){
+              return response.reRole = 'سوبر أدمن';
+            }else if(response.role == 'admin'){
+              return response.reRole = 'أدمن';
+            }else if(response.role == 'super-academic-guide'){
+              return response.reRole = 'كبير مرشدين أكاديمي';
+            }else if(response.role == 'academic-guide'){
+              return response.reRole = ' مرشد أكاديمي';
+            }else if(response.role == 'assistant'){
+              return response.reRole = 'مساعد';
+            }else if(response.role == 'date-entry'){
+              return response.reRole = 'مدخل بيانات';
+            }else if(response.role == 'registered-admin'){
+              return response.reRole = 'أدمن التسجيل';
+            }else if(response.role == 'files-admin'){
+              return response.reRole = 'أدمن  الملفات';
+            }else if(response.role == 'account-admin'){
+              return response.reRole = 'أدمن  الحسابات';
+            }
+            return response;
           }
         )
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
               let splitName = response.en_name == null ? response.name : response.en_name;
               let splitedName = splitName.split(' ');
@@ -348,17 +401,33 @@ export class HomeComponent implements OnInit {
     this.employeesLoading = true;
     this._GeneralService.statistics().subscribe(
       (response) => {
-        this.empolyees = response.SuperAcademicGuideData
+        this.empolyeesCard = response.SuperAcademicGuideData
 
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
-            const splitRole = response.role;
-            const splitedRole = splitRole.split('-');
-            const role = splitedRole.join(' ');
-            return response.reRole = role;
+            if(response.role == 'super-admin'){
+              return response.reRole = 'سوبر أدمن';
+            }else if(response.role == 'admin'){
+              return response.reRole = 'أدمن';
+            }else if(response.role == 'super-academic-guide'){
+              return response.reRole = 'كبير مرشدين أكاديمي';
+            }else if(response.role == 'academic-guide'){
+              return response.reRole = ' مرشد أكاديمي';
+            }else if(response.role == 'assistant'){
+              return response.reRole = 'مساعد';
+            }else if(response.role == 'date-entry'){
+              return response.reRole = 'مدخل بيانات';
+            }else if(response.role == 'registered-admin'){
+              return response.reRole = 'أدمن التسجيل';
+            }else if(response.role == 'files-admin'){
+              return response.reRole = 'أدمن  الملفات';
+            }else if(response.role == 'account-admin'){
+              return response.reRole = 'أدمن  الحسابات';
+            }
+            return response;          
           }
         )
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
               let splitName = response.en_name == null ? response.name : response.en_name;
               let splitedName = splitName.split(' ');
@@ -384,17 +453,33 @@ export class HomeComponent implements OnInit {
     this.employeesLoading = true;
     this._GeneralService.statistics().subscribe(
       (response) => {
-        this.empolyees = response.AcademicGuideData
+        this.empolyeesCard = response.AcademicGuideData
 
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
-            const splitRole = response.role;
-            const splitedRole = splitRole.split('-');
-            const role = splitedRole.join(' ');
-            return response.reRole = role;
+            if(response.role == 'super-admin'){
+              return response.reRole = 'سوبر أدمن';
+            }else if(response.role == 'admin'){
+              return response.reRole = 'أدمن';
+            }else if(response.role == 'super-academic-guide'){
+              return response.reRole = 'كبير مرشدين أكاديمي';
+            }else if(response.role == 'academic-guide'){
+              return response.reRole = ' مرشد أكاديمي';
+            }else if(response.role == 'assistant'){
+              return response.reRole = 'مساعد';
+            }else if(response.role == 'date-entry'){
+              return response.reRole = 'مدخل بيانات';
+            }else if(response.role == 'registered-admin'){
+              return response.reRole = 'أدمن التسجيل';
+            }else if(response.role == 'files-admin'){
+              return response.reRole = 'أدمن  الملفات';
+            }else if(response.role == 'account-admin'){
+              return response.reRole = 'أدمن  الحسابات';
+            }
+            return response;
           }
         )
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
               let splitName = response.en_name == null ? response.name : response.en_name;
               let splitedName = splitName.split(' ');
@@ -420,17 +505,33 @@ export class HomeComponent implements OnInit {
     this.employeesLoading = true;
     this._GeneralService.statistics().subscribe(
       (response) => {
-        this.empolyees = response.AssistantData
+        this.empolyeesCard = response.AssistantData
 
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
-            const splitRole = response.role;
-            const splitedRole = splitRole.split('-');
-            const role = splitedRole.join(' ');
-            return response.reRole = role;
+            if(response.role == 'super-admin'){
+              return response.reRole = 'سوبر أدمن';
+            }else if(response.role == 'admin'){
+              return response.reRole = 'أدمن';
+            }else if(response.role == 'super-academic-guide'){
+              return response.reRole = 'كبير مرشدين أكاديمي';
+            }else if(response.role == 'academic-guide'){
+              return response.reRole = ' مرشد أكاديمي';
+            }else if(response.role == 'assistant'){
+              return response.reRole = 'مساعد';
+            }else if(response.role == 'date-entry'){
+              return response.reRole = 'مدخل بيانات';
+            }else if(response.role == 'registered-admin'){
+              return response.reRole = 'أدمن التسجيل';
+            }else if(response.role == 'files-admin'){
+              return response.reRole = 'أدمن  الملفات';
+            }else if(response.role == 'account-admin'){
+              return response.reRole = 'أدمن  الحسابات';
+            }
+            return response;
           }
         )
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
               let splitName = response.en_name == null ? response.name : response.en_name;
               let splitedName = splitName.split(' ');
@@ -456,17 +557,33 @@ export class HomeComponent implements OnInit {
     this.employeesLoading = true;
     this._GeneralService.statistics().subscribe(
       (response) => {
-        this.empolyees = response.DataEntryData
+        this.empolyeesCard = response.DataEntryData
 
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
-            const splitRole = response.role;
-            const splitedRole = splitRole.split('-');
-            const role = splitedRole.join(' ');
-            return response.reRole = role;
+            if(response.role == 'super-admin'){
+              return response.reRole = 'سوبر أدمن';
+            }else if(response.role == 'admin'){
+              return response.reRole = 'أدمن';
+            }else if(response.role == 'super-academic-guide'){
+              return response.reRole = 'كبير مرشدين أكاديمي';
+            }else if(response.role == 'academic-guide'){
+              return response.reRole = ' مرشد أكاديمي';
+            }else if(response.role == 'assistant'){
+              return response.reRole = 'مساعد';
+            }else if(response.role == 'date-entry'){
+              return response.reRole = 'مدخل بيانات';
+            }else if(response.role == 'registered-admin'){
+              return response.reRole = 'أدمن التسجيل';
+            }else if(response.role == 'files-admin'){
+              return response.reRole = 'أدمن  الملفات';
+            }else if(response.role == 'account-admin'){
+              return response.reRole = 'أدمن  الحسابات';
+            }
+            return response;
           }
         )
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
               let splitName = response.en_name == null ? response.name : response.en_name;
               let splitedName = splitName.split(' ');
@@ -492,17 +609,33 @@ export class HomeComponent implements OnInit {
     this.employeesLoading = true;
     this._GeneralService.statistics().subscribe(
       (response) => {
-        this.empolyees = response.RegisteredAdminData
+        this.empolyeesCard = response.RegisteredAdminData
 
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
-            const splitRole = response.role;
-            const splitedRole = splitRole.split('-');
-            const role = splitedRole.join(' ');
-            return response.reRole = role;
+            if(response.role == 'super-admin'){
+              return response.reRole = 'سوبر أدمن';
+            }else if(response.role == 'admin'){
+              return response.reRole = 'أدمن';
+            }else if(response.role == 'super-academic-guide'){
+              return response.reRole = 'كبير مرشدين أكاديمي';
+            }else if(response.role == 'academic-guide'){
+              return response.reRole = ' مرشد أكاديمي';
+            }else if(response.role == 'assistant'){
+              return response.reRole = 'مساعد';
+            }else if(response.role == 'date-entry'){
+              return response.reRole = 'مدخل بيانات';
+            }else if(response.role == 'registered-admin'){
+              return response.reRole = 'أدمن التسجيل';
+            }else if(response.role == 'files-admin'){
+              return response.reRole = 'أدمن  الملفات';
+            }else if(response.role == 'account-admin'){
+              return response.reRole = 'أدمن  الحسابات';
+            }
+            return response;
           }
         )
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
               let splitName = response.en_name == null ? response.name : response.en_name;
               let splitedName = splitName.split(' ');
@@ -528,17 +661,33 @@ export class HomeComponent implements OnInit {
     this.employeesLoading = true;
     this._GeneralService.statistics().subscribe(
       (response) => {
-        this.empolyees = response.FilesAdminData
+        this.empolyeesCard = response.FilesAdminData
 
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
-            const splitRole = response.role;
-            const splitedRole = splitRole.split('-');
-            const role = splitedRole.join(' ');
-            return response.reRole = role;
+            if(response.role == 'super-admin'){
+              return response.reRole = 'سوبر أدمن';
+            }else if(response.role == 'admin'){
+              return response.reRole = 'أدمن';
+            }else if(response.role == 'super-academic-guide'){
+              return response.reRole = 'كبير مرشدين أكاديمي';
+            }else if(response.role == 'academic-guide'){
+              return response.reRole = ' مرشد أكاديمي';
+            }else if(response.role == 'assistant'){
+              return response.reRole = 'مساعد';
+            }else if(response.role == 'date-entry'){
+              return response.reRole = 'مدخل بيانات';
+            }else if(response.role == 'registered-admin'){
+              return response.reRole = 'أدمن التسجيل';
+            }else if(response.role == 'files-admin'){
+              return response.reRole = 'أدمن  الملفات';
+            }else if(response.role == 'account-admin'){
+              return response.reRole = 'أدمن  الحسابات';
+            }
+            return response;
           }
         )
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
               let splitName = response.en_name == null ? response.name : response.en_name;
               let splitedName = splitName.split(' ');
@@ -564,17 +713,33 @@ export class HomeComponent implements OnInit {
     this.employeesLoading = true;
     this._GeneralService.statistics().subscribe(
       (response) => {
-        this.empolyees = response.AccountAdminData
+        this.empolyeesCard = response.AccountAdminData
 
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
-            const splitRole = response.role;
-            const splitedRole = splitRole.split('-');
-            const role = splitedRole.join(' ');
-            return response.reRole = role;
+            if(response.role == 'super-admin'){
+              return response.reRole = 'سوبر أدمن';
+            }else if(response.role == 'admin'){
+              return response.reRole = 'أدمن';
+            }else if(response.role == 'super-academic-guide'){
+              return response.reRole = 'كبير مرشدين أكاديمي';
+            }else if(response.role == 'academic-guide'){
+              return response.reRole = ' مرشد أكاديمي';
+            }else if(response.role == 'assistant'){
+              return response.reRole = 'مساعد';
+            }else if(response.role == 'date-entry'){
+              return response.reRole = 'مدخل بيانات';
+            }else if(response.role == 'registered-admin'){
+              return response.reRole = 'أدمن التسجيل';
+            }else if(response.role == 'files-admin'){
+              return response.reRole = 'أدمن  الملفات';
+            }else if(response.role == 'account-admin'){
+              return response.reRole = 'أدمن  الحسابات';
+            }
+            return response;
           }
         )
-        this.empolyees.forEach(
+        this.empolyeesCard.forEach(
           (response:any) => {
               let splitName = response.en_name == null ? response.name : response.en_name;
               let splitedName = splitName.split(' ');
@@ -605,12 +770,30 @@ export class HomeComponent implements OnInit {
         this.userArray = JSON.parse(
           localStorage.getItem('currentUserArray') || '{}'
         );
-        console.log(this.userArray);
-        const splitRole = this.userArray?.role;
+        if(this.userArray?.role == 'super-admin'){
+              this.role = 'سوبر أدمن';
+            }else if(this.userArray?.role == 'admin'){
+              this.role = 'أدمن';
+            }else if(this.userArray?.role == 'super-academic-guide'){
+              this.role = 'كبير مرشدين أكاديمي';
+            }else if(this.userArray?.role == 'academic-guide'){
+              this.role = ' مرشد أكاديمي';
+            }else if(this.userArray?.role == 'assistant'){
+              this.role = 'مساعد';
+            }else if(this.userArray?.role == 'date-entry'){
+              this.role = 'مدخل بيانات';
+            }else if(this.userArray?.role == 'registered-admin'){
+              this.role = 'أدمن التسجيل';
+            }else if(this.userArray?.role == 'files-admin'){
+              this.role = 'أدمن  الملفات';
+            }else if(this.userArray?.role == 'account-admin'){
+              this.role = 'أدمن  الحسابات';
+            }
+        // const splitRole = this.userArray?.role;
+        // const splitedRole =  splitRole.split('-');
+        // this.role = splitedRole.join(' ');
         const splitName = this.userArray?.name;
         const splitedName =  splitName.split(' ');
-        const splitedRole =  splitRole.split('-');
-        this.role = splitedRole.join(' ');
         this.firstName = splitedName[0]
         this.lastName = splitedName[1] || splitedName[2]
         this.fullName = this.firstName.split('')[0].toUpperCase() + this.lastName.split('')[0].toUpperCase();
@@ -625,6 +808,15 @@ export class HomeComponent implements OnInit {
     this.showStatistics();
     this.authenticationFunction();
     this.getNotepad();
+    this.showAllRoles();
+    this.ckeConfig = {
+      toolbar: [ [ 'Bold' ,  'Italic' , 'Underline' , 'BulletedList', 'NumberedList', 'Link' , 'emoji'] ],
+      removePlugins:
+        "resize"
+    };
+  
+    this._BsLocaleService.use('ar')
+
     // this.superAdmins();
     let main_content = document.querySelector('.content');
 

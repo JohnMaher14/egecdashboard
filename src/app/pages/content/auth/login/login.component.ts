@@ -46,7 +46,6 @@ export class LoginComponent implements OnInit {
           this.actionLoading = false;
         }
       }, error => {
-        console.log(error);
         if(error.status == 401){
 
             this._ToastrService.error(`تأكد من صحة البريد الإلكتروني وكلمة السر` , 'حدث خطأ' , {

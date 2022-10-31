@@ -6,7 +6,8 @@
 
 $mainColor: #202556;
 .flip-card {
-  height: 150px;
+  height: 136px;
+  border-radius: 8px;
 }
 .w-65{
   width: 65%;
@@ -42,17 +43,43 @@ $mainColor: #202556;
 
 }
 .user__card {
+  .dropdown-toggle{
+    padding: 2px 10px;
+    &:focus{
+      box-shadow: none;
+    }
+  }
   .dropdown-menu{
     &.show{
       background-color: #f5f5f5;
       max-height: 200px;
       overflow-y: auto;
+      &::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      /* Track */
+      &::-webkit-scrollbar-track {
+        background: #ccc;
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+        background: #777;
+      }
       li{
         cursor: pointer;
       }
+
     }
   }
   .card-body{
+    overflow-y: hidden;
+    overflow-x: hidden;
+    &:hover{
+      overflow-x: auto;
+
+    }
     &::-webkit-scrollbar {
       height: 10px;
     }
@@ -77,14 +104,12 @@ body{
 
   /* Track */
   &::-webkit-scrollbar-track {
-    background: #777;
+    background: #f5f5f5;
   }
 
-
-
-  /* Handle on hover */
-  &::-webkit-scrollbar-thumb:hover {
-    background: rgba(#fff, 0.5);
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #777;
   }
 }
 .flip-card-inner {
@@ -113,27 +138,100 @@ body{
   border: none;
   background-color: transparent;
   margin-top: 0;
-  height: 0;
-  opacity:0;
-  transition: all 1s;
+display: none;  
+transition: all 1s;
   textarea{
     min-height: 0;
     height: 0;
     padding:0;
     border: 1px solid;
     border-radius: 30px;
+    max-height: 100%;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+  
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #f5f5f5;
+    }
+  
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #777;
+    }
   }
   &.show{
-    height: 218px;
-    opacity:1;
-    margin-top: 20px;
+    display: block;
+    // margin-top: 20px;
+    height: 100%;
     textarea{
-      height: 100%;
       padding: 0.5rem 0.75rem;
     }
   }
 }
+.main{
+  &__card{
+    // height: 0;
+    opacity:0;
+    display: none;
+    &.show{
+      height: 100% !important;
+      opacity: 1;
+      display: block;
+  
+    }
+  }
+}
+.cke_bottom{
+  display: none !important;
+}
+.cke_wysiwyg_frame{
+  height: 90%;}
+.cke_contents {
+  height: 240px !important;
+  max-height: 100%;
+  border-radius: 8px;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
 
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: #f5f5f5;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #777;
+  }
+}
+.cke_chrome {
+  height: 94% !important;
+  max-height: 100%;
+  border: none !important;
+  border-radius: 8px !important;
+}
+.cke_inner{
+  border-radius: 8px !important;
+  border: none !important;
+}
+.cke_wysiwyg_frame {
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: #f5f5f5;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #777;
+  }
+}
 .report{
   &-box{
     &__total{
@@ -269,7 +367,7 @@ bs-days-calendar-view{
   width: 100%;
   &-container{
     width: 100%;
-    padding: 10px;
+    padding: 5px;
   }
   &-head{
     display: none;
@@ -288,7 +386,7 @@ bs-days-calendar-view{
         span{
           width: 15px !important;
           height: 15px;
-          line-height: 18px;
+          line-height: 15px;
           font-size: 9px;
           &.selected{
             background-color: $mainColor !important;
@@ -306,8 +404,8 @@ bs-days-calendar-view{
 }
 
 .widget{
-  right: -400px;
-  top: 0;
+  right: -500px;
+  bottom: 0;
   transition: all 1s;
   display: flex;
   flex-direction: column;
@@ -320,14 +418,19 @@ bs-days-calendar-view{
   }
   &_container{
     background-color: #fff;
-    padding: 5px;
+    padding: 15px;
+    border-top-left-radius: 30px;    
     box-shadow: 0 0 18px rgb(0 ,0, 0 , 40%);
     &_ul{
       li{
         padding: 5px;
         img{
-          width: 90%;
-          height: 30px;
+          cursor: pointer;
+          object-fit: cover;
+          object-position: center center;
+          width: 85px;
+          height: 85px;
+          border-radius: 50%;
           margin: 0 auto;
         }
 
@@ -495,7 +598,10 @@ bs-days-calendar-view{
   }
 }
 .content{
-  min-height: 90vh;
+  min-height: 80vh;
+  padding:10px 22px;
+  margin: 1rem;
+
   @media screen and (max-width:1024px) {
     margin-top: 3.5rem;
   }
@@ -503,8 +609,46 @@ bs-days-calendar-view{
     margin: 35px 10px 10px 10px;
   }
 }
+
 .loading{
   &_data{
+    &--login{
+      position: fixed;
+      inset:0;
+      background-color: #f4f5fa50;
+      z-index:9999999;
+      border-radius: 30px;
+      .lds-ring {
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        width: 80px;
+        height: 80px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .lds-ring div {
+        box-sizing: border-box;
+        display: block;
+        position: absolute;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border: 8px solid $mainColor;
+        border-radius: 50%;
+        animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        border-color: $mainColor transparent transparent transparent;
+      }
+      .lds-ring div:nth-child(1) {
+        animation-delay: -0.45s;
+      }
+      .lds-ring div:nth-child(2) {
+        animation-delay: -0.3s;
+      }
+      .lds-ring div:nth-child(3) {
+        animation-delay: -0.15s;
+      }
+    }
     position: absolute;
     inset:0;
     background-color: #f4f5fa;
@@ -552,6 +696,22 @@ bs-days-calendar-view{
     transform: rotate(360deg);
   }
 }
+.p-datatable {
+  &.p-datatable-gridlines{
+    .p-datatable-tbody > tr{
+      > td{
+        text-align: right;
+      }
+    }
+    .p-datatable-thead > tr{
+
+      > th{
+        text-align: right;
+      }
+    }
+  }
+}
+
 .showBackground:focus{
   color: #fff;
 }
@@ -576,9 +736,9 @@ bs-days-calendar-view{
 }
 
 .profile-user-wid {
-  width: 3rem !important;
-  height: 3rem !important;
-  margin-top: -26px;
+  width: 5rem !important;
+  height: 5rem !important;
+  margin-top: -70px;
 }
 
 .avatar-md {
@@ -872,5 +1032,32 @@ ul.chats .img-circle {
   margin-right: -48%
 }
 .footer{
-  background-color: #081E45 !important;
+  background-color: #777 !important;
+}
+// tables
+#listBachelors{
+  .p-paginator-icon{
+    transform: rotate(180deg);
+  }
+}
+// navbar
+.reports{
+
+  &_ul{
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+  
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #f5f5f5;
+    }
+  
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #777;
+    }
+  }
+
+
 }

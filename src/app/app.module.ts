@@ -16,6 +16,7 @@ import { AuthenticationInterceptor } from './services/authentication.interceptor
 import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
 import localeAr from '@angular/common/locales/ar';
 import { registerLocaleData } from '@angular/common';
+import { NotfoundComponent } from './pages/shared/notfound/notfound.component';
 
 registerLocaleData(localeAr, 'ar');
 
@@ -23,7 +24,8 @@ registerLocaleData(localeAr, 'ar');
   declarations: [
     AppComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    NotfoundComponent
   ],
   imports: [
     BrowserModule,

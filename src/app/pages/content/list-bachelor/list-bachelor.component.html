@@ -1,0 +1,23 @@
+<p-table [value]="customers" responsiveLayout="scroll"
+dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+	[rowsPerPageOptions]="[10,25,50]" styleClass="p-datatable-customers p-datatable-gridlines"
+	[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+	[globalFilterFields]="['id ','name','email','role']" id="listBachelors"
+>
+  <ng-template pTemplate="header">
+      <tr>
+          <th pSortableColumn="id"># <p-sortIcon field="id"></p-sortIcon></th>
+          <th pSortableColumn="name">الأسم <p-sortIcon field="name"></p-sortIcon></th>
+          <th pSortableColumn="email">البريد الألكتروني <p-sortIcon field="email"></p-sortIcon></th>
+          <th pSortableColumn="role">دور <p-sortIcon field="role"></p-sortIcon></th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-customer>
+      <tr>
+          <td>{{customer.id}}</td>
+          <td>{{customer.en_name == null ? customer.name : customer.en_name}}</td>
+          <td>{{customer.email}}</td>
+          <td style="text-transform: capitalize;">{{customer.reRole }}</td>
+      </tr>
+  </ng-template>
+</p-table>

@@ -34,12 +34,27 @@ export class NavbarComponent implements OnInit {
         );
 
 
-        const splitRole = this.userArray?.role;
-
-        const splitedRole =  splitRole.split('-');
-        const split = this.userArray?.name;
+        if(this.userArray?.role == 'super-admin'){
+          this.role = 'سوبر أدمن';
+        }else if(this.userArray?.role == 'admin'){
+          this.role = 'أدمن';
+        }else if(this.userArray?.role == 'super-academic-guide'){
+          this.role = 'كبير مرشدين أكاديمي';
+        }else if(this.userArray?.role == 'academic-guide'){
+          this.role = ' مرشد أكاديمي';
+        }else if(this.userArray?.role == 'assistant'){
+          this.role = 'مساعد';
+        }else if(this.userArray?.role == 'date-entry'){
+          this.role = 'مدخل بيانات';
+        }else if(this.userArray?.role == 'registered-admin'){
+          this.role = 'أدمن التسجيل';
+        }else if(this.userArray?.role == 'files-admin'){
+          this.role = 'أدمن  الملفات';
+        }else if(this.userArray?.role == 'account-admin'){
+          this.role = 'أدمن  الحسابات';
+        }
+                const split = this.userArray?.name;
         const splited =  split.split(' ');
-        this.role = splitedRole.join(' ');
         this.firstName = splited[0]
         this.lastName = splited[1] || splited[2]
         this.fullName = this.firstName.split('')[0].toUpperCase() + this.lastName.split('')[0].toUpperCase();

@@ -33,27 +33,25 @@
                           <img alt="Rubick Tailwind HTML Admin Template" src="assets/images/profile-10.jpg">
                       </div>
                       <div class="dropdown-menu w-56">
-                          <ul class="dropdown-content bg-theme-26 dark-bg-dark-6 text-white">
-                              <li class="p-2 text-right">
-                                  <div class="fw-medium text-white">Mohamed hamed</div>
-                                  <div class="fs-xs text-theme-28 mt-0.5 dark-text-gray-600">Super admin</div>
-                              </li>
-                              <li>
-                                  <hr class="dropdown-divider border-theme-27 dark-border-dark-3">
-                              </li>
-                              <li>
-                                  <a href="#"
-                                      class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> <i
-                                          class="fa fa-user w-4 h-4"></i> الصفحة الشخصية </a>
-                              </li>
-                              <li>
-                                  <hr class="dropdown-divider border-theme-27 dark-border-dark-3">
-                              </li>
-                              <li>
-                                  <a href="#"
-                                      class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> <i
-                                          class="fa fa-sign-out-alt w-4 h-4"></i> خروج </a>
-                              </li>
+                          <ul class="dropdown-content dark-bg-dark-6">
+                            <li class="p-2 text-right">
+                              <div class="fw-medium">{{ userArray.name }}</div>
+                              <div class="fs-xs mt-0.5 dark-text-gray-600 text_role">{{ role }}</div>
+                          </li>
+                          <li>
+                              <hr class="dropdown-divider border-theme-27 dark-border-dark-3">
+                          </li>
+                          <li>
+                              <a routerLink="/admin/profile" class="dropdown-item  bg-theme-1-hover dark-bg-dark-3-hover"> <i
+                                      class="fa fa-user w-4 h-4"></i> الصفحة الشخصية </a>
+                          </li>
+                          <li>
+                              <hr class="dropdown-divider border-theme-27 dark-border-dark-3">
+                          </li>
+                          <li>
+                              <button (click)="logout()" class="dropdown-item bg-theme-1-hover dark-bg-dark-3-hover"> <i
+                                      class="fa fa-sign-out-alt w-4 h-4"></i> خروج </button>
+                          </li>
                           </ul>
                       </div>
                   </div>
@@ -79,7 +77,8 @@
         <li >
             <a href="javascript:;" class="menu" (click)="submenuIsOpened === false ? submenuClick(1) : submenuHide(1)">
                 <div class="menu__icon"> <i class="fa fa-ad"></i>  </div>
-                <div class="menu__title"> ادارة التسويق و الأعلانات
+                <div class="menu__title"> إدارة التسويق والإعلانات
+
                   <i  class="fa fa-chevron-down menu__sub-icon"></i>
                 </div>
             </a>
@@ -179,6 +178,7 @@
                 <div class="menu__icon"> <i class="fa fa-shopping-basket"></i> </div>
                 <div class="menu__title"> إدارة
                   المبيعات
+
                   <i  class="fa fa-chevron-down menu__sub-icon"></i>
 
                   </div>
@@ -258,7 +258,9 @@
         <li >
             <a href="javascript:;" class="menu" (click)="submenuIsOpened === false ? submenuClick(3) : submenuHide(3)">
                 <div class="menu__icon"> <i class="fa fa-file-alt"></i> </div>
-                <div class="menu__title"> أدارة الحسابات
+                <div class="menu__title"> إدارة
+                  الحسابات
+
 
                   <i  class="fa fa-chevron-down menu__sub-icon"></i>
 
@@ -645,7 +647,8 @@
               <li>
                   <a href="javascript:;" class="top-menu">
                       <div class="top-menu__icon"> <i data-feather="activity"></i> </div>
-                      <div class="top-menu__title"> ادارة التسويق و الأعلانات
+                      <div class="top-menu__title">إدارة التسويق والإعلانات
+
                         <i  class="fa fa-chevron-down top-menu__sub-icon"></i>
                       </div>
                   </a>
@@ -743,8 +746,9 @@
               <li>
                   <a href="javascript:;" class="top-menu">
                       <div class="top-menu__icon"> <i data-feather="box"></i> </div>
-                      <div class="top-menu__title"> إدارة
+                      <div class="top-menu__title">إدارة
                         المبيعات
+
                         <i  class="fa fa-chevron-down top-menu__sub-icon"></i>
 
                         </div>
@@ -824,7 +828,9 @@
               <li>
                   <a href="javascript:;" class="top-menu">
                       <div class="top-menu__icon"> <i data-feather="box"></i> </div>
-                      <div class="top-menu__title"> أدارة الحسابات
+                      <div class="top-menu__title">إدارة
+                        الحسابات
+
 
                         <i  class="fa fa-chevron-down top-menu__sub-icon"></i>
 
@@ -980,7 +986,7 @@
 
                       </div>
                   </a>
-                  <ul class="" style="max-height: 223px;overflow-y: auto;overflow-x: hidden;">
+                  <ul class="reports_ul" style="max-height: 223px;overflow-y: auto;overflow-x: hidden;">
                     <li>
                       <a href="javascript:;" class="top-menu">
                           <div class="top-menu__icon">  </div>
@@ -1335,7 +1341,7 @@
                           <hr class="dropdown-divider border-theme-27 dark-border-dark-3">
                       </li>
                       <li>
-                          <a href="#" class="dropdown-item  bg-theme-1-hover dark-bg-dark-3-hover"> <i
+                          <a routerLink="/admin/profile" class="dropdown-item  bg-theme-1-hover dark-bg-dark-3-hover"> <i
                                   class="fa fa-user w-4 h-4"></i> الصفحة الشخصية </a>
                       </li>
                       <li>
@@ -1378,7 +1384,7 @@
                           </div>
                           <div class="flex-fill ms-3">
                               <p class="mb-0">لقد قام  <strong class="text-primary">John maher</strong> بتخصيص طالب جديد لك </p>
-                              <small>11:30 AM Today</small>
+                              <small>{{'2022-10-20 10:48:23' | date:'EEEE  d MMMM  y, h:mm a':undefined:'ar'}}</small>
                           </div>
                       </a>
                   </li>
@@ -1390,7 +1396,7 @@
                           <div class="flex-fill ms-3">
                               <p class="mb-0">قام
                                 <strong class="text-primary">Mohamed Hamed </strong> iبتعديل الملف الشخصي لطالب جديد</p>
-                              <small>1:30 AM Today</small>
+                              <small>{{'2022-10-20 10:48:23' | date:'EEEE  d MMMM  y, h:mm a':undefined:'ar'}}</small>
                           </div>
                       </a>
                   </li>
@@ -1403,7 +1409,7 @@
                               <p class="mb-0">قام
 
                                 <strong class="text-primary">Khalifa</strong> بكتابة تعليق على أحد الأرقام الخاصة بك</p>
-                              <small>8:30 AM Today</small>
+                              <small>{{'2022-10-20 10:48:23' | date:'EEEE  d MMMM  y, h:mm a':undefined:'ar'}}</small>
                           </div>
                       </a>
                   </li>
@@ -1415,7 +1421,7 @@
                         <div class="flex-fill ms-3">
                             <p class="mb-0">تطلب
                               <strong class="text-primary">Maha</strong> الإذن بقبول فواتير طالب جديد</p>
-                            <small>1:30 AM Today</small>
+                            <small>{{'2022-10-20 10:48:23' | date:'EEEE  d MMMM  y, h:mm a':undefined:'ar'}}</small>
                         </div>
                     </a>
                   </li>
@@ -1431,7 +1437,7 @@
                       <div class="flex-fill ms-3">
                           <p class="mb-0">قام
                             <strong class="text-primary">Mohamed Hamed </strong> iبتعديل الملف الشخصي لطالب جديد</p>
-                          <small>1:30 AM Today</small>
+                          <small>{{'2022-10-20 10:48:23' | date:'EEEE  d MMMM  y, h:mm a':undefined:'ar'}}</small>
                       </div>
                   </a>
               </li>
@@ -1444,7 +1450,7 @@
                           <p class="mb-0">قام
 
                             <strong class="text-primary">Khalifa</strong> بكتابة تعليق على أحد الأرقام الخاصة بك</p>
-                          <small>8:30 AM Today</small>
+                          <small>{{'2022-10-20 10:48:23' | date:'EEEE  d MMMM  y, h:mm a':undefined:'ar'}}</small>
                       </div>
                   </a>
               </li>
@@ -1460,7 +1466,7 @@
                       <div class="flex-fill ms-3">
                           <p class="mb-0">تطلب
                             <strong class="text-primary">Maha</strong> الإذن بقبول فواتير طالب جديد</p>
-                          <small>1:30 AM Today</small>
+                          <small>{{'2022-10-20 10:48:23' | date:'EEEE  d MMMM  y, h:mm a':undefined:'ar'}}</small>
                       </div>
                   </a>
                 </li>
@@ -1471,7 +1477,7 @@
                       </div>
                       <div class="flex-fill ms-3">
                           <p class="mb-0">لقد قام  <strong class="text-primary">John maher</strong> بتخصيص طالب جديد لك </p>
-                          <small>11:30 AM Today</small>
+                          <small>1{{'2022-10-20 10:48:23' | date:'EEEE  d MMMM  y, h:mm a':undefined:'ar'}}</small>
                       </div>
                   </a>
                 </li>
@@ -1496,7 +1502,7 @@
                   </div>
                   <div class="flex-fill ms-3">
                       <p class="mb-0">يجب ان تكون اكثر دقة <strong class="text-primary">John maher</strong> </p>
-                      <small>11:30 AM Today</small>
+                      <small>1{{'2022-10-20 10:48:23' | date:'EEEE  d MMMM  y, h:mm a':undefined:'ar'}}</small>
                   </div>
               </a>
           </li>
@@ -1508,7 +1514,7 @@
                   <div class="flex-fill ms-3">
                       <p class="mb-0">لا تنسي ان تتصل ب محمد <strong class="text-primary">Delal ahamad</strong>
                       </p>
-                      <small>1:30 AM Today</small>
+                      <small>{{'2022-10-20 10:48:23' | date:'EEEE  d MMMM  y, h:mm a':undefined:'ar'}}</small>
                   </div>
               </a>
           </li>

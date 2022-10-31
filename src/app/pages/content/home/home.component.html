@@ -1,16 +1,6 @@
 <div class="row">
   <div class="col-12">
-    <div class="card notepad__card">
-
-      <textarea name="" id="notepad" (keyup)="typingInNotepad($event)" class="notepad form-control"
-        placeholder="بماذا تفكر؟">{{notepad}}</textarea>
-      <!-- <ckeditor
-          [(ngModel)]="ckeditorContent"
-          [config]="ckeConfig"
-          (keyup)="typingInNotepad($event)"
-          formControlName="text"
-          ></ckeditor> -->
-    </div>
+    
     <div class="d-flex justify-content-between">
       <button type="button" *ngIf="!hideNotePad" (click)="showNotePad()" title=" المفكرة الخاصة"
         class="btn btn-rounded-primary show mr-1 my-2"><i class="fas fa-sticky-note" aria-hidden="true"></i></button>
@@ -21,10 +11,23 @@
       </button>
     </div>
   </div>
-</div> 
+</div>
 <div class="row mb-5">
-  <div class="col-xl-5 mb-4">
-    <div class="card card-shadow main__card overflow-hidden mb-4 h-100">
+  <div class="col-xl-5">
+    <div class="card card-shadow notepad__card ">
+
+      <!-- <textarea name="" id="notepad" (keyup)="typingInNotepad($event)" class="notepad form-control"
+        placeholder="بماذا تفكر؟">{{notepad == null ||  notepad == 'null'? notepadNull : notepad}}</textarea> -->
+      <ckeditor
+        [(ngModel)]="notepad == null ||  notepad == 'null'? notepadNull : notepad"
+      [config]="ckeConfig"
+          (keyup)="typingInNotepad($event)"
+          id="notepad"
+          class="notepad form-control h-100"
+          placeholder="بماذا تفكر؟"
+          ></ckeditor>
+    </div>
+    <div class="card card-shadow main__card show overflow-hidden mb-0">
       <div class="bg-primary bg-soft">
         <div class="row align-items-center justify-content-between align-items-center">
           <div class="col-md-7 col-6 name_container">
@@ -68,7 +71,7 @@
             </div>
           </div>
           <div class="col-md-6">
-            <bs-datepicker-inline [bsValue]="bsInlineValue"></bs-datepicker-inline>
+            <bs-datepicker-inline [bsValue]="bsInlineValue" [minDate]="date" [maxDate]="date"></bs-datepicker-inline>
           </div>
           <div class="col-md-3 col-6 date_container text-center">
             <div class="date">
@@ -93,13 +96,13 @@
                 <i data-feather="briefcase" class="fa fa-briefcase report-box__icon "></i>
 
               </div>
-              <div class="report-box__total fs-3xl fw-medium mt-6">30</div>
+              <div class="report-box__total fs-3xl fw-medium mt-3">{{empolyees.length}}</div>
               <div class="fs-base  mt-1">اجمالي عدد الموظفين الحاليين</div>
             </div>
             <div class="flip-card-back">
-              <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [legend]="false" [type]="'line'">
-              </canvas>
-
+              <!-- <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [legend]="false" [type]="'line'">
+              </canvas> -->
+              <canvas id="emplyeesChart" >{{ chart  }}</canvas>
               <!-- <canvas id="donut-chart-widget" height="100px" width="100px"></canvas> -->
 
             </div>
@@ -115,7 +118,7 @@
                 <i data-feather="users" class="fa fa-users report-box__icon "></i>
 
               </div>
-              <div class="report-box__total fs-3xl fw-medium mt-6">2500</div>
+              <div class="report-box__total fs-3xl fw-medium mt-3">2500</div>
               <div class="fs-base  mt-1"> عدد العملاء
               </div>
             </div>
@@ -140,7 +143,7 @@
               <i data-feather="dollar-sign" class=" fa fa-dollar report-box__icon"></i>
 
             </div>
-            <div class="report-box__total fs-3xl fw-medium mt-6">20%</div>
+            <div class="report-box__total fs-3xl fw-medium mt-3">20%</div>
             <div class="fs-base  mt-1">أجمالي التارجت نسبة التحقيق (%)</div>
           </div>
         </div>
@@ -153,7 +156,7 @@
               <i data-feather="users" class=" fa fa-users report-box__icon "></i>
 
             </div>
-            <div class="report-box__total fs-3xl fw-medium mt-6">1500</div>
+            <div class="report-box__total fs-3xl fw-medium mt-3">1500</div>
             <div class="fs-base  mt-1">
               إجمالي عدد الطلاب المعينين
             </div>
@@ -169,7 +172,7 @@
               <i data-feather="users" class="fa fa-users report-box__icon "></i>
 
             </div>
-            <div class="report-box__total fs-3xl fw-medium mt-6">1000</div>
+            <div class="report-box__total fs-3xl fw-medium mt-3">1000</div>
             <div class="fs-base  mt-1">
               إجمالي عدد الطلاب الغير المعينين
             </div>
@@ -186,7 +189,7 @@
               <i data-feather="phone-call" class="fa fa-phone-volume report-box__icon"></i>
 
             </div>
-            <div class="report-box__total fs-3xl fw-medium mt-6">25</div>
+            <div class="report-box__total fs-3xl fw-medium mt-3">25</div>
             <div class="fs-base  mt-1">اجمالي عدد المكلمات</div>
 
           </div>
@@ -276,9 +279,9 @@
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">الموظفين</h5>
         <div class="btn-group" dropdown>
-          <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
+          <button id="button-basic" dropdownToggle type="button" class="btn bg-gray-400 dropdown-toggle"
                   aria-controls="dropdown-basic">
-                  <i class="fas fa-ellipsis-v"></i>
+                  <i class="fas fa-ellipsis"></i>
           </button>
           <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
               role="menu" aria-labelledby="button-basic">
@@ -298,10 +301,15 @@
       <div class="card-body position-relative">
         <div class="loading_data" *ngIf="employeesLoading">
 
-          <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+          <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         </div>
         <div class="d-flex">
-          <div class="col-lg-4 userCard" *ngFor="let empolyee of empolyees">
+          <div class="col-lg-4 userCard" *ngFor="let empolyee of empolyeesCard">
             <div class="intro-y col-span-12 md:col-span-6 lg:col-span-4 h-100">
 
               <div class="box">
@@ -328,30 +336,31 @@
     </div>
   </div>
 </div>
-<div class="widget position-fixed">
-  <div class="widget_container">
+<div class="widget position-fixed ">
+  <div class="widget_container bg-gray-400">
     <div class="d-flex align-items-center justify-content-between py-3 px-1">
       <h5 class="offcanvas-title">تغيير الواجهة</h5>
-      <button type="button" (click)="hideBackground()">
+      <button type="button" class="bg-gray-400" (click)="hideBackground()">
         <i class="fa fa-times"></i>
       </button>
     </div>
+    <h3></h3>
     <ul class="list-unstyled row widget_container_ul">
-      <li class="col-6" (click)="onClickBackground(1)">
+      <li class="col-4" (click)="onClickBackground(1)">
         <img src="assets/images/background/Defult.jpg" alt="">
       </li>
-      <li class="col-6" (click)="onClickBackground(2)">
+      <li class="col-4" (click)="onClickBackground(2)">
         <img src="assets/images/background/Black.jpg" alt="">
       </li>
-      <li class="col-6" (click)="onClickBackground(3)">
+      <li class="col-4" (click)="onClickBackground(3)">
         <img src="assets/images/background/Cacao.jpg" alt="">
       </li >
 
       <li class="col-6" (click)="onClickBackground(4)">
         <img src="assets/images/background/Light.jpg" alt="">
       </li>
-      <li class="col-12" (click)="onClickBackground(5)">
-        <img src="assets/images/background/Mint.jpg" style="width: 95%;" alt="">
+      <li class="col-6" (click)="onClickBackground(5)">
+        <img src="assets/images/background/Mint.jpg"  alt="">
       </li>
 
     </ul>
