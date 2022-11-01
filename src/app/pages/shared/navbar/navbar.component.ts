@@ -1,4 +1,6 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -15,13 +17,31 @@ export class NavbarComponent implements OnInit {
   lastName!: string;
   fullName!: string;
   role!:string;
+  modalRef!: BsModalRef;
   constructor(
     private _AuthenticationService:AuthenticationService,
-    private _Renderer2:Renderer2
+    private _Renderer2:Renderer2,
+    private _BsModalService:BsModalService
   ) { }
 
   ngOnInit(): void {
     this.authenticationFunction()
+  }
+      // create movie
+      openModal(template: any) {
+        this.modalRef = this._BsModalService.show(template , {
+          class: 'modal-dialog-centered' 
+
+        });
+      }
+  profileForm:FormGroup =  new FormGroup({
+    name: new FormControl('', Validators.required),
+    role: new FormControl('', Validators.required),
+    email: new FormControl('', Validators.required),
+    phone: new FormControl('', Validators.required)
+  })
+  onEditProfile(profileForm: FormGroup){
+    console.log(profileForm);
   }
   authenticationFunction(){
 

@@ -1,9 +1,17 @@
-<p-table [value]="customers" responsiveLayout="scroll"
+<p-table #dt1 [value]="customers" responsiveLayout="scroll"
 dataKey="id" [rows]="10" [showCurrentPageReport]="true"
 	[rowsPerPageOptions]="[10,25,50]" styleClass="p-datatable-customers p-datatable-gridlines"
 	[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
 	[globalFilterFields]="['id ','name','email','role']" id="listBachelors"
 >
+<ng-template pTemplate="caption">
+  <div class="p-d-flex">
+    <span class="p-input-icon-left p-ml-auto">
+              <i class="pi pi-search"></i>
+              <!-- <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" /> -->
+          </span>
+  </div>
+</ng-template>
   <ng-template pTemplate="header">
       <tr>
           <th pSortableColumn="id"># <p-sortIcon field="id"></p-sortIcon></th>
@@ -15,7 +23,7 @@ dataKey="id" [rows]="10" [showCurrentPageReport]="true"
   <ng-template pTemplate="body" let-customer>
       <tr>
           <td>{{customer.id}}</td>
-          <td>{{customer.en_name == null ? customer.name : customer.en_name}}</td>
+          <td>{{customer.name}}</td>
           <td>{{customer.email}}</td>
           <td style="text-transform: capitalize;">{{customer.reRole }}</td>
       </tr>

@@ -25,6 +25,13 @@
   </div>
   <!--Preloader area End here-->
   </app-root>
+  <script>
+    window.addEventListener("keydown", function(e) {
+    if(["ArrowUp","ArrowDown"].indexOf(e.code) > -1) {
+        e.preventDefault();
+    }
+  }, false);
+</script>
   <script src="https://cdn.ckeditor.com/4.17.1/full-all/ckeditor.js"></script>
 
 </body>

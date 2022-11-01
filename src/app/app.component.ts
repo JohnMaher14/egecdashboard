@@ -35,6 +35,9 @@ export class AppComponent {
       this.loading = false;
     }, 1500);
     this.authenticationFunction();
+    if(localStorage.getItem('backgroundWidget') != undefined){
+      this._Renderer2.setAttribute(document.body,'style', localStorage.getItem('backgroundWidget') || '{}')
+    }
   }
   onSubmit(heroForm:FormGroup){
     console.log(heroForm.value);

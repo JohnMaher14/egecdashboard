@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-12">
-    
+
     <div class="d-flex justify-content-between">
       <button type="button" *ngIf="!hideNotePad" (click)="showNotePad()" title=" المفكرة الخاصة"
         class="btn btn-rounded-primary show mr-1 my-2"><i class="fas fa-sticky-note" aria-hidden="true"></i></button>
@@ -13,16 +13,18 @@
   </div>
 </div>
 <div class="row mb-5">
-  <div class="col-xl-5">
+  <div class="col-xl-5 welcome__card">
     <div class="card card-shadow notepad__card ">
 
       <!-- <textarea name="" id="notepad" (keyup)="typingInNotepad($event)" class="notepad form-control"
         placeholder="بماذا تفكر؟">{{notepad == null ||  notepad == 'null'? notepadNull : notepad}}</textarea> -->
       <ckeditor
-        [(ngModel)]="notepad == null ||  notepad == 'null'? notepadNull : notepad"
+        [(ngModel)]="notepad == null ||  notepad == '' || notepad == 'null'? notepadNull : notepad"
+        data="{{ notepad == null || notepad == '' ||  notepad == 'null'? notepadNull : notepad }}"
       [config]="ckeConfig"
-          (keyup)="typingInNotepad($event)"
+          (change)="typingInNotepad($event)"
           id="notepad"
+          dir="rtl"
           class="notepad form-control h-100"
           placeholder="بماذا تفكر؟"
           ></ckeditor>
@@ -37,7 +39,7 @@
             </div>
           </div>
           <div class="col-md-3 col-5 align-self-end">
-            <img src="https://themesbrand.com/skote/layouts/assets/images/profile-img.png" alt="" class="img-fluid">
+            <img src="assets/images/profile-img.png" alt="" class="img-fluid">
           </div>
         </div>
       </div>
@@ -88,7 +90,7 @@
   </div>
   <div class="col-xl-7">
     <div class="grid columns-12 gap-6 statitics">
-      <div class="g-col-12  g-col-lg-4 intro-y">
+      <div class="g-col-12   g-col-xl-4 g-col-lg-6   intro-y">
         <div class="flip-card report-box zoom-in">
           <div class="box p-5 flip-card-inner color1">
             <div class="flip-card-front">
@@ -109,7 +111,7 @@
           </div>
         </div>
       </div>
-      <div class="g-col-12 g-col-lg-4 intro-y">
+      <div class="g-col-12  g-col-xl-4 g-col-lg-6   intro-y">
         <div class="flip-card report-box zoom-in">
           <div class="box p-5 color2">
             <div class=" ">
@@ -135,7 +137,7 @@
           </div>
         </div>
       </div>
-      <div class="g-col-12 g-col-lg-4 intro-y">
+      <div class="g-col-12  g-col-xl-4 g-col-lg-6   intro-y">
         <div class="flip-card report-box zoom-in">
           <div class="box p-5 color5">
 
@@ -148,7 +150,7 @@
           </div>
         </div>
       </div>
-      <div class="g-col-12 g-col-lg-4 intro-y">
+      <div class="g-col-12  g-col-xl-4 g-col-lg-6   intro-y">
         <div class="flip-card report-box zoom-in">
           <div class="box p-5 color3">
 
@@ -164,7 +166,7 @@
           </div>
         </div>
       </div>
-      <div class="g-col-12 g-col-lg-4 intro-y">
+      <div class="g-col-12  g-col-xl-4 g-col-lg-6   intro-y">
         <div class=" report-box zoom-in">
           <div class="box p-5  color4">
 
@@ -181,7 +183,7 @@
         </div>
       </div>
 
-      <div class="g-col-12 g-col-lg-4 intro-y">
+      <div class="g-col-12  g-col-xl-4 g-col-lg-6   intro-y">
         <div class="flip-card report-box zoom-in">
           <div class="box p-5  color6">
 
@@ -201,7 +203,7 @@
 </div>
 <div class="row">
   <div class="col-lg-5">
-    <div class="card card-shadow h-100">
+    <div class="card card-shadow chat__card h-100">
       <div class="card-header">
         <h5 class="card-title mb-0">اخر الأشعارات التي لم يتم فتحها</h5>
       </div>
@@ -279,11 +281,11 @@
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">الموظفين</h5>
         <div class="btn-group" dropdown>
-          <button id="button-basic" dropdownToggle type="button" class="btn bg-gray-400 dropdown-toggle"
+          <button id="button-basic" dropdownToggle type="button" class="btn btn-filter-users dropdown-toggle"
                   aria-controls="dropdown-basic">
                   <i class="fas fa-ellipsis"></i>
           </button>
-          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+          <ul id="dropdown-basic" *dropdownMenu class="card-shadow dropdown-menu"
               role="menu" aria-labelledby="button-basic">
             <li role="menuitem"><a class="dropdown-item" (click)="showAllRoles()">الكل</a></li>
             <li role="menuitem"><a class="dropdown-item" (click)="admins()">أدمن</a></li>
@@ -299,7 +301,7 @@
         </div>
       </div>
       <div class="card-body position-relative">
-        <div class="loading_data" *ngIf="employeesLoading">
+        <div class="loading_data" style="border-radius: 0;" *ngIf="employeesLoading">
 
           <div class="lds-ring">
             <div></div>
@@ -315,15 +317,13 @@
               <div class="box">
                 <div class="flex items-start p-3">
                   <div class="w-full">
-                    <div class="w-16 h-16 mx-auto image-fit ml-2">
+                    <div class="w-10 h-10 mx-auto image-fit ml-2">
                       <div class="card_img">
                         <p class="mb-0 fs16">{{ empolyee.abbrevationName }}</p>
                       </div>
                     </div>
                     <div class="lg:ml-4 text-center lg:text-left mt-3 lg:mt-0">
-                      <h4  class="font-large username">{{
-                                            empolyee.en_name != null ? empolyee.en_name : empolyee.name
-                                          }}</h4>
+                      <h4  class="font-large username">{{ empolyee.name }}</h4>
                       <p class="text-slate-500 text-xs mt-0.5 username_role">{{empolyee.reRole}}</p>
                     </div>
                   </div>
@@ -339,32 +339,64 @@
 <div class="widget position-fixed ">
   <div class="widget_container bg-gray-400">
     <div class="d-flex align-items-center justify-content-between py-3 px-1">
-      <h5 class="offcanvas-title">تغيير الواجهة</h5>
+      <h5 class="offcanvas-title">تغيير الخلفية</h5>
       <button type="button" class="bg-gray-400" (click)="hideBackground()">
         <i class="fa fa-times"></i>
       </button>
     </div>
     <h3></h3>
     <ul class="list-unstyled row widget_container_ul">
-      <li class="col-4" (click)="onClickBackground(1)">
+      <li class="col-md-2 col-3" (click)="onClickBackground(1)">
         <img src="assets/images/background/Defult.jpg" alt="">
       </li>
-      <li class="col-4" (click)="onClickBackground(2)">
+      <li class="col-md-2 col-3" (click)="onClickBackground(2)">
         <img src="assets/images/background/Black.jpg" alt="">
       </li>
-      <li class="col-4" (click)="onClickBackground(3)">
+      <li class="col-md-2 col-3" (click)="onClickBackground(3)">
         <img src="assets/images/background/Cacao.jpg" alt="">
       </li >
-
-      <li class="col-6" (click)="onClickBackground(4)">
+      <li class="col-md-2 col-3" (click)="onClickBackground(4)">
         <img src="assets/images/background/Light.jpg" alt="">
       </li>
-      <li class="col-6" (click)="onClickBackground(5)">
+      <li class="col-md-2 col-3" (click)="onClickBackground(5)">
         <img src="assets/images/background/Mint.jpg"  alt="">
       </li>
+      <li class="col-md-2 col-3" (click)="onClickBackground(6)">
+        <div class="widget_container_ul--background" style="background-color: #202556;">
 
+        </div>
+      </li >
+      <li class="col-md-2 col-3" (click)="onClickBackground(7)">
+        <div class="widget_container_ul--background" style="background-color: #09c;">
+
+        </div>
+      </li>
+      <li class="col-md-2 col-3" (click)="onClickBackground(8)">
+        <div class="widget_container_ul--background" style="background-color: #177e80;">
+
+        </div>
+      </li>
+      <li class="col-md-2 col-3" (click)="onClickBackground(9)">
+        <div class="widget_container_ul--background" style="background-color: #581845;">
+
+        </div>
+      </li >
+      <li class="col-md-2 col-3" (click)="onClickBackground(10)">
+        <div class="widget_container_ul--background" style="background-color: #C7D628;">
+
+        </div>
+      </li>
+      <li class="col-md-2 col-3" (click)="onClickBackground(11)">
+        <div class="widget_container_ul--background" style="background-color: #B03B37;">
+
+        </div>
+      </li>
+      <li class="col-md-2 col-3" (click)="onClickBackground(12)">
+        <div class="widget_container_ul--background" style="background-color: #65575C;">
+
+        </div>
+      </li>
     </ul>
-
 
   </div>
 </div>

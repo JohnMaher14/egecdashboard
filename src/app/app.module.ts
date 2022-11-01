@@ -13,7 +13,7 @@ import { NavbarComponent } from './pages/shared/navbar/navbar.component';
 import { FooterComponent } from './pages/shared/footer/footer.component';
 import { NgChartsModule } from 'ng2-charts';
 import { AuthenticationInterceptor } from './services/authentication.interceptor';
-import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
+import { ModalModule } from "ngx-bootstrap/modal";
 import localeAr from '@angular/common/locales/ar';
 import { registerLocaleData } from '@angular/common';
 import { NotfoundComponent } from './pages/shared/notfound/notfound.component';
@@ -38,6 +38,7 @@ registerLocaleData(localeAr, 'ar');
     ToastrModule.forRoot(),
     CountUpModule,
     NgChartsModule.forRoot(),
+    ModalModule.forChild()
   ],
   providers: [
     {

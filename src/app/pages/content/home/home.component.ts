@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Chart } from 'chart.js';
+import { CKEditor4 } from 'ckeditor4-angular';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
-import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { GeneralService } from 'src/app/services/general.service';
 
@@ -39,24 +39,28 @@ export class HomeComponent implements OnInit {
     private _Renderer2:Renderer2,
     private _GeneralService:GeneralService,
     private _AuthenticationService:AuthenticationService,
-    private _ToastrService:ToastrService,
     private _BsLocaleService:BsLocaleService
-    ) { 
-      console.log(this.date);
+    ) {
     }
-  typingInNotepad(event:any){
-    console.log(event.target.value);
-    this._GeneralService.notepad(event.target.value ,this.userArray.id ,  event.target.value).subscribe(
+  public typingInNotepad(event: CKEditor4.EventInfo){
+    console.log(event.editor.getData());
+    this._GeneralService.notepad( JSON.stringify(event.editor.getData()) ,this.userArray.id ,  'data').subscribe(
       (response) => {
-
-        // this._ToastrService.success('حفظ' , 'جاري الحفظ...' , {
-        //   timeOut: 6000 , positionClass: 'toast-bottom-center'
-
-        // })
-        localStorage.setItem('notepad', response.AdminNote);
+        
+        localStorage.setItem('notepad', JSON.parse(response.AdminNote));
       }
     )
   }
+  // typingInNotepad(event:any){
+  //   console.log(event);
+  //   this._GeneralService.notepad(event.target.value ,this.userArray.id ,  event.target.value).subscribe(
+  //     (response) => {
+  //       console.log(response);
+        
+  //       localStorage.setItem('notepad', response.AdminNote);
+  //     }
+  //   )
+  // }
   getNotepad(){
     if(localStorage.getItem('notepad') != undefined){
       this.notepad =  localStorage.getItem('notepad');
@@ -67,42 +71,71 @@ export class HomeComponent implements OnInit {
   onClickBackground(id:number){
     var bodyContainer =  document.querySelector('body');
     if(id == 1){
-      this._Renderer2.addClass(bodyContainer, 'widget_1')
-      this._Renderer2.removeClass(bodyContainer, 'widget_2')
-      this._Renderer2.removeClass(bodyContainer, 'widget_3')
-      this._Renderer2.removeClass(bodyContainer, 'widget_4')
-      this._Renderer2.removeClass(bodyContainer, 'widget_5')
+      this._Renderer2.setStyle(bodyContainer, 'background', 'url(assets/images/background/Defult.jpg)');
+      localStorage.setItem('backgroundWidget' , "background: url(assets/images/background/Defult.jpg)")
     }
     else if(id == 2){
-      this._Renderer2.addClass(bodyContainer, 'widget_2')
-      this._Renderer2.removeClass(bodyContainer, 'widget_1')
-      this._Renderer2.removeClass(bodyContainer, 'widget_3')
-      this._Renderer2.removeClass(bodyContainer, 'widget_4')
-      this._Renderer2.removeClass(bodyContainer, 'widget_5')
+      this._Renderer2.setStyle(bodyContainer, 'background', 'url(assets/images/background/Black.jpg)');
+      localStorage.setItem('backgroundWidget' , "background: url(assets/images/background/Black.jpg)")
+
 
     }
     else if(id == 3){
-      this._Renderer2.addClass(bodyContainer, 'widget_3')
-      this._Renderer2.removeClass(bodyContainer, 'widget_2')
-      this._Renderer2.removeClass(bodyContainer, 'widget_1')
-      this._Renderer2.removeClass(bodyContainer, 'widget_4')
-      this._Renderer2.removeClass(bodyContainer, 'widget_5')
+      this._Renderer2.setStyle(bodyContainer, 'background', 'url(assets/images/background/Cacao.jpg)');
+
+      localStorage.setItem('backgroundWidget' , "background: url(assets/images/background/Cacao.jpg)")
 
     }
     else if(id == 4){
-      this._Renderer2.addClass(bodyContainer, 'widget_4')
-      this._Renderer2.removeClass(bodyContainer, 'widget_2')
-      this._Renderer2.removeClass(bodyContainer, 'widget_3')
-      this._Renderer2.removeClass(bodyContainer, 'widget_1')
-      this._Renderer2.removeClass(bodyContainer, 'widget_5')
+      this._Renderer2.setStyle(bodyContainer, 'background', 'url(assets/images/background/Light.jpg)');
+      localStorage.setItem('backgroundWidget' , "background: url(assets/images/background/Light.jpg)")
 
     }
-    else{
-      this._Renderer2.addClass(bodyContainer, 'widget_5')
-      this._Renderer2.removeClass(bodyContainer, 'widget_2')
-      this._Renderer2.removeClass(bodyContainer, 'widget_3')
-      this._Renderer2.removeClass(bodyContainer, 'widget_4')
-      this._Renderer2.removeClass(bodyContainer, 'widget_1')
+    else if(id == 5 ){
+      this._Renderer2.setStyle(bodyContainer, 'background', 'url(assets/images/background/Mint.jpg)');
+      localStorage.setItem('backgroundWidget' , "background: url(assets/images/background/Mint.jpg)")
+
+    }
+    else if(id == 6){
+      this._Renderer2.setStyle(bodyContainer, 'background', '#202556');
+
+      localStorage.setItem('backgroundWidget' , "background: #202556")
+
+    }
+    else if(id == 7){
+      this._Renderer2.setStyle(bodyContainer, 'background', '#09c');
+
+      localStorage.setItem('backgroundWidget' , "background: #09c")
+
+    }
+    else if(id == 8 ){
+      this._Renderer2.setStyle(bodyContainer, 'background', '#177e80');
+
+      localStorage.setItem('backgroundWidget' , "background: #177e80")
+
+    }
+    else if(id == 9){
+      this._Renderer2.setStyle(bodyContainer, 'background', '#581845');
+
+      localStorage.setItem('backgroundWidget' , "background: #581845")
+
+    }
+    else if(id == 10){
+      this._Renderer2.setStyle(bodyContainer, 'background', '#C7D628');
+
+      localStorage.setItem('backgroundWidget' , "background: #C7D628")
+
+    }
+    else if(id == 11 ){
+      this._Renderer2.setStyle(bodyContainer, 'background', '#B03B37');
+
+      localStorage.setItem('backgroundWidget' , "background: #B03B37")
+
+    }
+    else if(id == 12 ){
+      this._Renderer2.setStyle(bodyContainer, 'background', '#65575C');
+
+      localStorage.setItem('backgroundWidget' , "background: #65575C")
 
     }
   }
@@ -204,7 +237,7 @@ export class HomeComponent implements OnInit {
               return response.reRole = ' مرشد أكاديمي';
             }else if(response.role == 'assistant'){
               return response.reRole = 'مساعد';
-            }else if(response.role == 'date-entry'){
+            }else if(response.role == 'data-entry'){
               return response.reRole = 'مدخل بيانات';
             }else if(response.role == 'registered-admin'){
               return response.reRole = 'أدمن التسجيل';
@@ -236,6 +269,7 @@ export class HomeComponent implements OnInit {
         const chartss =  [response.totalAdmin ,  response.totalSuperAcademicGuide, response.totalAcademicGuide , response.totalAssistant , response.totalAccountAdmin , response.totalDataEntry , response.totalRegisteredAdmin,  response.totalFilesAdmin ]
         // this.dataChart = Math.max(null , chartss)
         this.dataChart = Math.max.apply(null , chartss)
+        const minDataChart = Math.min.apply(null , chartss)
         console.log(Math.max.apply(null , chartss));
         this.chart = new Chart("emplyeesChart", {
           type: 'line', //this denotes tha type of chart
@@ -272,7 +306,8 @@ export class HomeComponent implements OnInit {
                 display: false
               },
               y:{
-                max: this.dataChart
+                max: this.dataChart,
+                min: minDataChart
               }
             },
           },
@@ -301,6 +336,7 @@ export class HomeComponent implements OnInit {
 
         this.empolyeesCard.forEach(
           (response:any) => {
+            console.log(response.name , response.en_name);
             if(response.role == 'super-admin'){
               return response.reRole = 'سوبر أدمن';
             }else if(response.role == 'admin'){
@@ -311,7 +347,7 @@ export class HomeComponent implements OnInit {
               return response.reRole = ' مرشد أكاديمي';
             }else if(response.role == 'assistant'){
               return response.reRole = 'مساعد';
-            }else if(response.role == 'date-entry'){
+            }else if(response.role == 'data-entry'){
               return response.reRole = 'مدخل بيانات';
             }else if(response.role == 'registered-admin'){
               return response.reRole = 'أدمن التسجيل';
@@ -363,7 +399,7 @@ export class HomeComponent implements OnInit {
               return response.reRole = ' مرشد أكاديمي';
             }else if(response.role == 'assistant'){
               return response.reRole = 'مساعد';
-            }else if(response.role == 'date-entry'){
+            }else if(response.role == 'data-entry'){
               return response.reRole = 'مدخل بيانات';
             }else if(response.role == 'registered-admin'){
               return response.reRole = 'أدمن التسجيل';
@@ -415,7 +451,7 @@ export class HomeComponent implements OnInit {
               return response.reRole = ' مرشد أكاديمي';
             }else if(response.role == 'assistant'){
               return response.reRole = 'مساعد';
-            }else if(response.role == 'date-entry'){
+            }else if(response.role == 'data-entry'){
               return response.reRole = 'مدخل بيانات';
             }else if(response.role == 'registered-admin'){
               return response.reRole = 'أدمن التسجيل';
@@ -424,7 +460,7 @@ export class HomeComponent implements OnInit {
             }else if(response.role == 'account-admin'){
               return response.reRole = 'أدمن  الحسابات';
             }
-            return response;          
+            return response;
           }
         )
         this.empolyeesCard.forEach(
@@ -467,7 +503,7 @@ export class HomeComponent implements OnInit {
               return response.reRole = ' مرشد أكاديمي';
             }else if(response.role == 'assistant'){
               return response.reRole = 'مساعد';
-            }else if(response.role == 'date-entry'){
+            }else if(response.role == 'data-entry'){
               return response.reRole = 'مدخل بيانات';
             }else if(response.role == 'registered-admin'){
               return response.reRole = 'أدمن التسجيل';
@@ -519,7 +555,7 @@ export class HomeComponent implements OnInit {
               return response.reRole = ' مرشد أكاديمي';
             }else if(response.role == 'assistant'){
               return response.reRole = 'مساعد';
-            }else if(response.role == 'date-entry'){
+            }else if(response.role == 'data-entry'){
               return response.reRole = 'مدخل بيانات';
             }else if(response.role == 'registered-admin'){
               return response.reRole = 'أدمن التسجيل';
@@ -571,7 +607,7 @@ export class HomeComponent implements OnInit {
               return response.reRole = ' مرشد أكاديمي';
             }else if(response.role == 'assistant'){
               return response.reRole = 'مساعد';
-            }else if(response.role == 'date-entry'){
+            }else if(response.role == 'data-entry'){
               return response.reRole = 'مدخل بيانات';
             }else if(response.role == 'registered-admin'){
               return response.reRole = 'أدمن التسجيل';
@@ -623,7 +659,7 @@ export class HomeComponent implements OnInit {
               return response.reRole = ' مرشد أكاديمي';
             }else if(response.role == 'assistant'){
               return response.reRole = 'مساعد';
-            }else if(response.role == 'date-entry'){
+            }else if(response.role == 'data-entry'){
               return response.reRole = 'مدخل بيانات';
             }else if(response.role == 'registered-admin'){
               return response.reRole = 'أدمن التسجيل';
@@ -675,7 +711,7 @@ export class HomeComponent implements OnInit {
               return response.reRole = ' مرشد أكاديمي';
             }else if(response.role == 'assistant'){
               return response.reRole = 'مساعد';
-            }else if(response.role == 'date-entry'){
+            }else if(response.role == 'data-entry'){
               return response.reRole = 'مدخل بيانات';
             }else if(response.role == 'registered-admin'){
               return response.reRole = 'أدمن التسجيل';
@@ -727,7 +763,7 @@ export class HomeComponent implements OnInit {
               return response.reRole = ' مرشد أكاديمي';
             }else if(response.role == 'assistant'){
               return response.reRole = 'مساعد';
-            }else if(response.role == 'date-entry'){
+            }else if(response.role == 'data-entry'){
               return response.reRole = 'مدخل بيانات';
             }else if(response.role == 'registered-admin'){
               return response.reRole = 'أدمن التسجيل';
@@ -780,7 +816,7 @@ export class HomeComponent implements OnInit {
               this.role = ' مرشد أكاديمي';
             }else if(this.userArray?.role == 'assistant'){
               this.role = 'مساعد';
-            }else if(this.userArray?.role == 'date-entry'){
+            }else if(this.userArray?.role == 'data-entry'){
               this.role = 'مدخل بيانات';
             }else if(this.userArray?.role == 'registered-admin'){
               this.role = 'أدمن التسجيل';
@@ -810,11 +846,15 @@ export class HomeComponent implements OnInit {
     this.getNotepad();
     this.showAllRoles();
     this.ckeConfig = {
-      toolbar: [ [ 'Bold' ,  'Italic' , 'Underline' , 'BulletedList', 'NumberedList', 'Link' , 'emoji'] ],
-      removePlugins:
+      toolbar: [ [ 'Bold' ,  'Italic' , 'Underline' , 'BulletedList', 'NumberedList' , 'Emoji'] ],
+      removePlugins: [
         "resize"
+      ],
+      contentsLangDirection :[
+        'rtl'
+      ]
     };
-  
+
     this._BsLocaleService.use('ar')
 
     // this.superAdmins();
